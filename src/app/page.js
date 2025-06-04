@@ -4,6 +4,7 @@ import Navbar from "@/components/shared/Navbar";
 import TrainSectionOne from "@/components/sections/TrainSectionOne";
 import TrainSectionTwo from "@/components/sections/TrainSectionTwo";
 import VideoSection from "@/components/ui/VideoSection";
+import TrainSectionThree from "@/components/sections/TrainSectionThree";
 export default function Home() {
   return (
     <div className="bg-[linear-gradient(180deg,_#040406_50%,_#09080D_100%)]">
@@ -15,6 +16,7 @@ export default function Home() {
       <div className=" px-8">
          <TrainSectionTwo/>
       </div>
+      <TrainSectionThree/>
     </div>
   );
 }

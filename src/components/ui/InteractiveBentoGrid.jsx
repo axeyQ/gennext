@@ -17,7 +17,7 @@ const BentoGrid = ({ className, children }) => {
   return (
     <div
       className={cn(
-        "grid grid-cols-1 gap-4 md:auto-rows-[12rem] md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 w-full",
+        "grid grid-cols-1 gap-4 md:auto-rows-[12rem] md:grid-cols-2 lg:grid-cols-3",
         className
       )}
     >
@@ -237,18 +237,13 @@ export default function InteractiveBentoGrid({ className }) {
   ];
 
   return (
-    <div className="w-full px-5 pb-16">
-      <BentoGrid className="w-full">
-        {bentoItems.map((item, index) => (
-          <BentoGridItem
-            photos={item.photos}
-            className={
-              index === 0 ? "md:col-span-2 lg:col-span-2" : 
-              index === 1 ? "lg:col-span-2" : ""
-            }
-          />
-        ))}
-      </BentoGrid>
-    </div>
+    <BentoGrid className={cn("max-w-4xl", className)}>
+      {bentoItems.map((item, index) => (
+        <BentoGridItem
+          photos={item.photos}
+          className={index === 0 ? "md:col-span-2" : ""}
+        />
+      ))}
+    </BentoGrid>
   );
 }
