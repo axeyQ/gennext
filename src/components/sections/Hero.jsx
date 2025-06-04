@@ -1,10 +1,28 @@
 'use client'
 
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
 import VideoSection from "../ui/VideoSection";
 
 export default function Hero() {
+  const containerRef = useRef(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end start']
+  });
+  
+  // Scale animation - starts small and scales up as you scroll
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 1.1]);
+  
+  // Optional: Add some opacity fade-in effect
+  const opacity = useTransform(scrollYProgress, [0, 0.3], [0.6, 1]);
+  
+  // Optional: Add Y movement for parallax effect - starts higher up
+  const y = useTransform(scrollYProgress, [0, 1], [-100, -50]);
+
   return (
-    <div className="min-h-screen bg-[linear-gradient(180deg,_#040406_50%,_#09080D_100%)] text-white relative flex flex-col justify-between items-center">
+    <div ref={containerRef} className="min-h-screen bg-[linear-gradient(180deg,_#040406_50%,_#09080D_100%)] text-white relative flex flex-col justify-between items-center">
       {/* Circuit Board Background - Only in Hero Section */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Static Circuit Pattern */}
@@ -171,16 +189,18 @@ export default function Hero() {
           </div>
         </div>
       </section>
-      <div className="flex justify-center items-center w-10/12">
+
+      {/* Scroll-Animated VideoSection */}
+      <motion.div 
+        className="flex justify-center items-center w-10/12 p-10 border-2 border-amber-50 rounded-3xl relative z-10"
+        style={{ 
+          scale,
+          opacity,
+          y
+        }}
+      >
         <VideoSection/>
-      </div>
-      {/* <iframe
-                            src="https://my.spline.design/robotfollowcursorforlandingpagemc-yDQ2KJIJ96N4Mlk7CyhxQfiB/"
-                            frameBorder="0"
-                           
-                            title="AI Robot Animation"
-                            allow="autoplay; fullscreen; vr"
-                        /> */}
+      </motion.div>
     </div>
   );
 }

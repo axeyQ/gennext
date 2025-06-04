@@ -44,11 +44,14 @@ const BentoGridItem = ({
   onLeave
 }) => {
   const [swiperInstance, setSwiperInstance] = useState(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [progressKey, setProgressKey] = useState(0);
 
   const handleMouseEnter = () => {
     onHover?.();
     if (swiperInstance && photos.length > 0) {
       swiperInstance.autoplay.start();
+      setProgressKey(prev => prev + 1); // Restart progress animation
     }
   };
 
@@ -56,15 +59,21 @@ const BentoGridItem = ({
     onLeave?.();
     if (swiperInstance && photos.length > 0) {
       swiperInstance.autoplay.stop();
-      // Reset to first slide
       swiperInstance.slideTo(0);
+      setCurrentSlide(0);
+      setProgressKey(0); // Reset progress
     }
+  };
+
+  const handleSlideChange = (swiper) => {
+    setCurrentSlide(swiper.realIndex);
+    setProgressKey(prev => prev + 1); // Restart progress animation on slide change
   };
 
   return (
     <div
       className={cn(
-        "group/bento row-span-1 rounded-xl border border-white/10 bg-[#0A090E] transition-all duration-500 ease-out cursor-pointer overflow-hidden",
+        "group/bento row-span-1 rounded-xl border border-white/10 bg-[#0A090E] transition-all duration-500 ease-out cursor-pointer overflow-hidden relative",
         // Scale and blur effects
         isHovered && "scale-105 shadow-2xl shadow-pink-500/30 z-10",
         isOtherHovered && "scale-95 blur-sm opacity-60",
@@ -74,6 +83,24 @@ const BentoGridItem = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
+      {/* Progress Bar */}
+      {photos.length > 0 && (
+        <div 
+          className={cn(
+            "absolute top-0 left-0 right-0 h-1 bg-white/10 z-20 transition-opacity duration-300",
+            isHovered ? "opacity-100" : "opacity-0"
+          )}
+        >
+          <div 
+            key={progressKey}
+            className={cn(
+              "h-full bg-gradient-to-r from-[#C2298A] to-pink-400 rounded-full transition-all duration-300",
+              isHovered && progressKey > 0 ? "animate-progress" : "w-0"
+            )}
+          />
+        </div>
+      )}
+
       {/* Photo Carousel */}
       <div className="relative w-full h-full rounded-xl overflow-hidden">
         {photos.length > 0 ? (
@@ -92,9 +119,9 @@ const BentoGridItem = ({
             className="w-full h-full"
             allowTouchMove={isHovered}
             onSwiper={setSwiperInstance}
+            onSlideChange={handleSlideChange}
             autoHeight={false}
             // Disable autoplay by default - will be controlled by hover
-            autoplay={false}
           >
             {photos.map((photo, index) => (
               <SwiperSlide key={index}>
@@ -125,7 +152,10 @@ const BentoGridItem = ({
             {photos.map((_, index) => (
               <div
                 key={index}
-                className="w-2 h-2 rounded-full bg-white/70 backdrop-blur-sm"
+                className={cn(
+                  "w-2 h-2 rounded-full backdrop-blur-sm transition-all duration-300",
+                  currentSlide === index ? "bg-white/90 scale-110" : "bg-white/50"
+                )}
               />
             ))}
           </div>
@@ -139,6 +169,50 @@ const BentoGridItem = ({
           )}
         />
       </div>
+
+      {/* Custom CSS for progress animation and dot effects */}
+      <style jsx>{`
+        @keyframes progress {
+          from {
+            width: 0%;
+          }
+          to {
+            width: 100%;
+          }
+        }
+        
+        @keyframes dotPulse {
+          0%, 100% {
+            transform: scale(1);
+            opacity: 1;
+          }
+          50% {
+            transform: scale(1.2);
+            opacity: 0.8;
+          }
+        }
+        
+        @keyframes dotGlow {
+          0%, 100% {
+            box-shadow: 0 0 20px rgba(194, 41, 138, 0.6), 0 0 40px rgba(194, 41, 138, 0.4), 0 0 60px rgba(194, 41, 138, 0.2);
+          }
+          50% {
+            box-shadow: 0 0 30px rgba(194, 41, 138, 0.8), 0 0 60px rgba(194, 41, 138, 0.6), 0 0 90px rgba(194, 41, 138, 0.4);
+          }
+        }
+        
+        .animate-progress {
+          animation: progress 5s linear;
+        }
+        
+        .animate-dot-pulse {
+          animation: dotPulse 2s ease-in-out infinite;
+        }
+        
+        .animate-dot-glow {
+          animation: dotGlow 3s ease-in-out infinite;
+        }
+      `}</style>
     </div>
   );
 };
@@ -215,6 +289,24 @@ export default function TrainSectionTwo() {
           {/* Center Rail Gradient */}
           <div className="absolute inset-0 w-full h-full flex items-center justify-center">
             <div className="h-full w-[4px] md:w-[6px] bg-[linear-gradient(180deg,#08070C_0%,rgba(194,41,138,0.8)_40%,rgba(194,41,138,0.8)_70%,#08070C_120%)]"></div>
+          </div>
+
+          {/* Animated Dot on Rail */}
+          <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+            {/* Outer Glow Ring */}
+            <div className="absolute inset-0 w-20 h-20 -m-10 rounded-full bg-[rgba(194,41,138,0.2)] animate-ping" style={{animationDuration: '3s'}}></div>
+            
+            {/* Middle Glow Ring */}
+            <div className="absolute inset-0 w-14 h-14 -m-7 rounded-full bg-[rgba(194,41,138,0.4)] animate-dot-pulse"></div>
+            
+            {/* Inner Dot with Custom Glow */}
+            <div className="w-5 h-5 rounded-full bg-[#C2298A] animate-dot-glow relative overflow-hidden">
+              {/* Core Bright Center */}
+              <div className="absolute inset-0.5 rounded-full bg-gradient-to-br from-white via-pink-200 to-[#C2298A] animate-pulse" style={{animationDuration: '1.5s'}}></div>
+              
+              {/* Inner Shine */}
+              <div className="absolute top-1 left-1 w-2 h-2 rounded-full bg-white/80 animate-pulse" style={{animationDuration: '2s'}}></div>
+            </div>
           </div>
         </div>
 
