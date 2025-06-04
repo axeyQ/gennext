@@ -170,16 +170,16 @@ export default function Hero() {
       {/* Hero Section - Your Original Code */}
       <section className="relative z-10 px-44 pt-24 pb-32 min-h-11/12 flex items-center justify-start">
         <div className="text-left flex flex-col justify-start h-full align-items-start">
-          <h1 className="font-tight leading-[1.1875] sm:leading-[1.1875] md:leading-[1.1875] text-[32px] sm:text-5xl md:text-6xl max-w-[900px] font-semibold mb-5 tracking-tight">
+          <h1 className="font-tight leading-[1.1875] sm:leading-[1.1875] md:leading-[1.1875] text-[32px] sm:text-5xl md:text-6xl max-w-[900px] font-semibold mb-5 tracking-tight text-center" >
             <span className="hidden md:inline">Shipping great products is hard. Scaling infrastructure is easy.</span>
             <span className="inline md:hidden">Shipping great products is hard. Scaling infrastructure is easy.</span>
           </h1>
           
-          <h2 className="text-3xl sm:text-h2 max-w-[860px] text-gray-600 mb-8">
+          <h2 className="text-3xl sm:text-h2 max-w-[860px] text-gray-600 mb-8 text-center">
             Railway simplifies your infrastructure stack from servers to observability with a single, scalable, easy-to-use platform.
           </h2>
 
-          <div className="flex flex-col sm:flex-row items-center justify-start gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button className="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105">
               Deploy a new project
             </button>
