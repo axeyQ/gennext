@@ -4,11 +4,13 @@ import Navbar from "@/components/shared/Navbar";
 import TrainSectionOne from "@/components/sections/TrainSectionOne";
 import TrainSectionTwo from "@/components/sections/TrainSectionTwo";
 import TrainSectionThree from "@/components/sections/TrainSectionThree";
+import HeroSample from "@/components/sections/HeroSample";
 export default function Home() {
   return (
     <div className="bg-[linear-gradient(180deg,_#040406_50%,_#09080D_100%)]">
       <Navbar/>
-      <Hero/>
+      <HeroSample/>
+
       <LogoScrollSection/>
       <TrainSectionOne/>
          <TrainSectionTwo/>
