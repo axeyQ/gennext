@@ -1,5 +1,6 @@
 'use client';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
 
 // Dark Image Card Component
 const DarkImageCard = ({ src, alt, className = "" }) => {
@@ -12,8 +13,8 @@ const DarkImageCard = ({ src, alt, className = "" }) => {
       `}
       whileHover={{ y: -4 }}
     >
-      <img 
-        src={src} 
+      <img
+        src={src}
         alt={alt}
         className="w-full h-full object-cover"
       />
@@ -21,11 +22,51 @@ const DarkImageCard = ({ src, alt, className = "" }) => {
   );
 };
 
-// Main Component Showcase with proper edge cutoffs and dark theme
+// Main Component Showcase with train and track
 export default function TrainSectionTwo() {
+  const containerRef = useRef(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start center', 'end end'],
+  });
+  
+  // Train movement - continues from previous section
+  const trainY = useTransform(scrollYProgress, [0, 1], [20, 250]);
+  
+
   return (
-    <section className="w-full bg-black py-24">
-      <div className="">
+    <section ref={containerRef} className="relative w-full bg-black py-24 overflow-hidden">
+      {/* Track and Train Container - Positioned on the right */}
+      <div className="absolute right-0 top-0 w-35 h-full flex justify-center">
+        
+        {/* Track */}
+        <div className="relative w-full h-full flex justify-center">
+          {/* Center Rail Gradient - Vertical track */}
+          <div className="absolute inset-0 w-full h-full flex items-center justify-center">
+            <div className="h-full w-[4px] md:w-[6px] bg-[linear-gradient(180deg,#08070C_0%,rgba(194,41,138,0.8)_40%,rgba(194,41,138,0.8)_70%,#08070C_120%)]"></div>
+          </div>
+        </div>
+        
+        {/* Animated Train */}
+        <motion.div
+          className="absolute left-1/2 top-0 z-20 transform -translate-x-1/2"
+          style={{ y: trainY }}
+        >
+       
+          
+          {/* Train SVG */}
+          <img 
+            src="/train2.svg" 
+            alt="Railway train"
+            style={{left:"-90px"}}
+            className="w-[120px] h-[260px] md:w-[180px] max-w-fit scrollable-train hidden md:block absolute z-10"
+          />
+        </motion.div>
+      </div>
+
+
+      <div className="relative z-10">
         {/* Header */}
         <div className="max-w-7xl mx-auto px-6 mb-16">
           <h4 className="text-purple-400 font-medium mb-4">Railway Components</h4>
@@ -43,29 +84,29 @@ export default function TrainSectionTwo() {
           {/* First Row with proper edge cutoffs */}
           <div className="flex gap-6 mb-6 -mx-40">
             {/* Cut off on left - starts outside viewport */}
-            <DarkImageCard 
-              src="https://picsum.photos/400/500?random=1" 
+            <DarkImageCard
+              src="https://picsum.photos/400/500?random=1"
               alt="Create Account Interface"
               className="w-80 h-96 flex-shrink-0 ml-24"
             />
             
             {/* Center card */}
-            <DarkImageCard 
-              src="https://picsum.photos/600/500?random=2" 
+            <DarkImageCard
+              src="https://picsum.photos/600/500?random=2"
               alt="Sign In Interface"
               className="w-96 h-96 flex-shrink-0"
             />
             
             {/* Large card */}
-            <DarkImageCard 
-              src="https://picsum.photos/800/500?random=3" 
+            <DarkImageCard
+              src="https://picsum.photos/800/500?random=3"
               alt="Account Dashboard"
               className="w-[500px] h-96 flex-shrink-0"
             />
             
             {/* Cut off on right - extends outside viewport */}
-            <DarkImageCard 
-              src="https://picsum.photos/400/500?random=4" 
+            <DarkImageCard
+              src="https://picsum.photos/400/500?random=4"
               alt="Profile Settings"
               className="w-80 h-96 flex-shrink-0"
             />
@@ -74,29 +115,29 @@ export default function TrainSectionTwo() {
           {/* Second Row with proper edge cutoffs */}
           <div className="flex gap-6 -mx-40">
             {/* Cut off on left */}
-            <DarkImageCard 
-              src="https://picsum.photos/300/400?random=5" 
+            <DarkImageCard
+              src="https://picsum.photos/300/400?random=5"
               alt="Email Verification"
               className="w-72 h-80 flex-shrink-0 ml-24"
             />
             
             {/* Medium card */}
-            <DarkImageCard 
-              src="https://picsum.photos/500/400?random=6" 
+            <DarkImageCard
+              src="https://picsum.photos/500/400?random=6"
               alt="Security Settings"
               className="w-80 h-80 flex-shrink-0"
             />
             
             {/* Large card */}
-            <DarkImageCard 
-              src="https://picsum.photos/700/400?random=7" 
+            <DarkImageCard
+              src="https://picsum.photos/700/400?random=7"
               alt="Team Management"
               className="w-96 h-80 flex-shrink-0"
             />
             
             {/* Cut off on right */}
-            <DarkImageCard 
-              src="https://picsum.photos/400/400?random=8" 
+            <DarkImageCard
+              src="https://picsum.photos/400/400?random=8"
               alt="Analytics Dashboard"
               className="w-80 h-80 flex-shrink-0"
             />

@@ -63,7 +63,6 @@ export default function TrainSectionOne() {
   const trainY = useTransform(scrollYProgress, [0, 1], [100, 600]);
   
   // Train glow intensity
-  const trainGlow = useTransform(scrollYProgress, [0, 0.5, 1], [0.4, 1, 0.4]);
 
   return (
     <section ref={containerRef} className="relative min-h-[120vh] bg-black overflow-hidden flex justify-center items-center">
@@ -81,23 +80,16 @@ export default function TrainSectionOne() {
           
           {/* Center Rail Gradient */}
           <div className="absolute inset-0 w-full h-full flex items-center justify-center">
-            <div className="h-full w-1 md:w-1.5 bg-gradient-to-b from-[#08070C] via-[rgba(202,36,77,0.8)] to-[#08070C]"></div>
+            <div className=" h-10/12 w-1 md:w-1.5 bg-gradient-to-b from-[#08070C] via-[rgba(202,36,77,0.8)] to-[#08070C]"></div>
           </div>
         </div>
-
+        
         {/* Animated Train */}
         <motion.div
           className="absolute left-1/2 top-0 z-20 transform -translate-x-1/2"
           style={{ y: trainY }}
         >
-          {/* Train Glow Effect */}
-          <motion.div
-            className="absolute inset-0 w-32 h-20 -m-8 rounded-full blur-2xl pointer-events-none"
-            style={{ 
-              opacity: trainGlow,
-              background: 'radial-gradient(ellipse, rgba(202, 36, 77, 0.8) 0%, rgba(202, 36, 77, 0.4) 40%, rgba(202, 36, 77, 0.1) 70%, transparent 100%)'
-            }}
-          />
+         
           
           {/* Train SVG */}
           <img 
@@ -109,8 +101,66 @@ export default function TrainSectionOne() {
         </motion.div>
       </div>
 
+      {/* Curved Track Extension */}
+      <div className="absolute left-0 top-0 w-full h-full overflow-visible pointer-events-none">
+        <svg
+          className="absolute w-full h-full"
+          viewBox="0 0 1520 790"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <linearGradient id="curveGradient" x1="0%" y1="0%" x2="50%" y2="0%">
+              <stop offset="0%" stopColor="rgba(202,36,77,0.3)" stopOpacity="0.3" />
+              <stop offset="70%" stopColor="rgba(202,36,77,0.6)" stopOpacity="1" />
+              <stop offset="100%" stopColor="rgba(202,36,77,0.3)" stopOpacity="1" />
+            </linearGradient>
+            <linearGradient id="downCurveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="rgba(202,36,77,0.3)" stopOpacity="1" />
+              <stop offset="70%" stopColor="rgba(202,36,77,0.6)" stopOpacity="1" />
+              <stop offset="100%" stopColor="rgba(202,36,77,0.3)" stopOpacity="1" />
+            </linearGradient>
+          </defs>
+          
+          {/* Horizontal curved track */}
+          <path
+            d="M192 760 Q192 800 242 800 L1400 800"
+            stroke="url(#curveGradient)"
+            strokeWidth="4"
+            fill="none"
+            className="drop-shadow-lg"
+          />
+          
+          {/* Downward curved track */}
+          <path
+            d="M1400 800 Q1450 800 1450 850 L1450 1000"
+            stroke="url(#downCurveGradient)"
+            strokeWidth="4"
+            fill="none"
+            className="drop-shadow-lg"
+          />
+          
+          {/* Glow effects */}
+          <path
+            d="M192 760 Q192 800 242 800 L1400 800"
+            stroke="rgba(202,36,77,.4)"
+            strokeWidth="8"
+            fill="none"
+            className="blur-sm"
+          />
+          
+          <path
+            d="M1400 800 Q1450 800 1450 850 L1450 1000"
+            stroke="rgba(202,36,77,.4)"
+            strokeWidth="8"
+            fill="none"
+            className="blur-sm"
+          />
+        </svg>
+      </div>
+
       {/* Content - Positioned on the right side */}
-      <div className=" h-full flex items-center justify-start px-16 py-32 z-30">
+      <div className=" h-full flex items-center justify-start px-16 py-32 z-30 relative">
         <div className="space-y-12 max-w-2xl">
           <WordRevealParagraph 
             text="For too long, deploying cloud infrastructure has been the most painful part of the developer toolchain." 
