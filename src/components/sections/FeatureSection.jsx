@@ -21,7 +21,7 @@ const FeatureSection = () => {
       preview: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=200&h=150&fit=crop",
       gridPosition: { x: 600, y: 80 }, // Top center
       color: "rgba(255,193,7,1)",
-      position:{left:515, top:0}
+      position:{left:50, top:-3}
     },
     apiGateway: {
       title: "api-gateway",
@@ -36,7 +36,7 @@ const FeatureSection = () => {
       preview: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=200&h=150&fit=crop",
       gridPosition: { x: 900, y: 180 }, // Top right
       color: "rgba(79,172,254,1)",
-      position:{left:790, top:20}
+      position:{left:72, top:5}
     },
     analytics: {
       title: "ackee-analytics",
@@ -51,7 +51,7 @@ const FeatureSection = () => {
       preview: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=200&h=150&fit=crop",
       gridPosition: { x: 150, y: 220 }, // Left
       color: "rgba(6,182,212,1)",
-      position:{left:5, top:80}
+      position:{left:6, top:15}
     },
     backend: {
       title: "backend",
@@ -66,7 +66,7 @@ const FeatureSection = () => {
       preview: "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=200&h=150&fit=crop",
       gridPosition: { x: 900, y: 320 }, // Right
       color: "rgba(34,197,94,1)",
-      position:{left:785, top:200}
+      position:{left:74, top:36}
     },
     postgres: {
       title: "postgres",
@@ -81,7 +81,7 @@ const FeatureSection = () => {
       preview: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=200&h=150&fit=crop",
       gridPosition: { x: 400, y: 480 }, // Bottom left
       color: "rgba(139,92,246,1)",
-      position:{left:180, top:420}
+      position:{left:15, top:80}
     },
     redis: {
       title: "redis-cache",
@@ -96,7 +96,7 @@ const FeatureSection = () => {
       preview: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=200&h=150&fit=crop",
       gridPosition: { x: 800, y: 480 }, // Bottom right
       color: "rgba(245,101,101,1)",
-      position:{left:620, top:420}
+      position:{left:60, top:75}
     },
     monitoring: {
       title: "monitoring",
@@ -111,7 +111,7 @@ const FeatureSection = () => {
       preview: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=150&fit=crop",
       gridPosition: { x: 900, y: 420 }, // Right side
       color: "rgba(168,85,247,1)",
-      position:{left:790, top:320}
+      position:{left:76, top:60}
     },
     worker: {
       title: "worker-service",
@@ -126,7 +126,7 @@ const FeatureSection = () => {
       preview: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=200&h=150&fit=crop",
       gridPosition: { x: 300, y: 180 }, // Top left
       color: "rgba(251,191,36,1)",
-      position:{left:340,top:30}
+      position:{left:34,top:5}
     }
   };
 
@@ -446,14 +446,14 @@ const FeatureSection = () => {
       </div>
 
       {/* Cards Container */}
-      <div className="relative z-10 h-[500px] max-w-5xl mx-auto">
+      <div className="relative z-10 h-[500px] max-w-5xl mx-auto flex justify-center items-center">
         
         {/* Center Display Card */}
         <motion.div 
-          className="absolute w-64 h-48 bg-gray-900/90 backdrop-blur-sm border border-gray-700/70 rounded-2xl overflow-hidden shadow-xl"
+          className=" w-64 h-48 bg-gray-900/90 backdrop-blur-sm border border-gray-700/70 rounded-2xl overflow-hidden shadow-xl"
           style={{
-            left: `${centerPoint.x - 128}px`,
-            top: `${centerPoint.y - 96}px`
+            left: `50%`,
+            top: `50%`
           }}
           variants={centerCardVariants}
           initial="initial"
@@ -498,8 +498,8 @@ const FeatureSection = () => {
             key={key}
             className="absolute w-40 h-28 bg-gray-900/80 backdrop-blur-sm border border-gray-700/60 rounded-xl overflow-hidden cursor-pointer"
             style={{
-              left: `${service.position.left}px`,
-              top: `${service.position.top}px`
+              left: `${service.position.left}%`,
+              top: `${service.position.top}%`
             }}
             variants={serviceCardVariants}
             initial="normal"
