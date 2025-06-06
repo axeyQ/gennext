@@ -2,7 +2,55 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useState } from 'react';
 
-// Service Node Component
+// Curved Train Track Component
+const CurvedTrainTrack = ({ className = "", glowColor = "rgba(139,92,246,0.8)" }) => {
+  return (
+    <div className={`relative w-full h-full ${className}`}>
+      {/* SVG Track Path */}
+      <svg 
+        className="absolute inset-0 w-full h-full" 
+        viewBox="0 0 300 800" 
+        fill="none" 
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        {/* Curved Track Path */}
+        <path
+          d="M150 0 L150 600 Q150 650 200 650 L800 650"
+          stroke={glowColor}
+          strokeWidth="4"
+          fill="none"
+          className="drop-shadow-lg"
+          style={{
+            filter: `drop-shadow(0 0 10px ${glowColor}) drop-shadow(0 0 20px ${glowColor.replace('0.8', '0.4')})`
+          }}
+        />
+        
+        {/* Track Glow Effect */}
+        <path
+          d="M150 0 L150 600 Q150 650 200 650 L800 650"
+          stroke={glowColor.replace('0.8', '0.3')}
+          strokeWidth="8"
+          fill="none"
+          className="blur-sm"
+        />
+      </svg>
+
+      {/* Animated Dot on Track */}
+      <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+        <div className="w-6 h-6 rounded-full relative"
+             style={{
+               background: glowColor,
+               boxShadow: `0 0 20px ${glowColor}, 0 0 40px ${glowColor.replace('0.8', '0.4')}`
+             }}>
+          {/* Inner bright core */}
+          <div className="absolute inset-1 rounded-full bg-white/80 animate-pulse"></div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Service Node Component  
 const ServiceNode = ({ service, position, connections = [], isActive = false }) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -21,7 +69,7 @@ const ServiceNode = ({ service, position, connections = [], isActive = false }) 
           style={{ height: '60px' }}
         />
       ))}
-      
+       
       {/* Service Card */}
       <div className={`
         bg-gray-900/80 backdrop-blur-sm border border-gray-700/50 rounded-lg p-3 min-w-[140px]
@@ -34,12 +82,12 @@ const ServiceNode = ({ service, position, connections = [], isActive = false }) 
           <div className={`w-3 h-3 rounded-full ${service.color}`}></div>
           <span className="text-white text-sm font-medium">{service.name}</span>
         </div>
-        
+         
         {/* Service URL */}
         <div className="text-xs text-blue-400 mb-2">
           {service.url}
         </div>
-        
+         
         {/* Status */}
         <div className="flex items-center gap-1">
           <div className="w-2 h-2 rounded-full bg-green-500"></div>
@@ -50,7 +98,7 @@ const ServiceNode = ({ service, position, connections = [], isActive = false }) 
   );
 };
 
-// Network Diagram Component
+// Network Diagram Component  
 const NetworkDiagram = () => {
   const services = [
     {
@@ -103,13 +151,13 @@ const NetworkDiagram = () => {
       <svg className="absolute inset-0 w-full h-full pointer-events-none">
         {/* Central hub connections */}
         <circle cx="50%" cy="50%" r="60" fill="none" stroke="url(#connectionGradient)" strokeWidth="2" opacity="0.5" />
-        
+         
         {/* Service interconnections */}
         <path d="M 150 80 Q 250 120 350 80" stroke="url(#connectionGradient)" strokeWidth="2" fill="none" opacity="0.6" />
         <path d="M 120 200 Q 200 250 400 280" stroke="url(#connectionGradient)" strokeWidth="2" fill="none" opacity="0.6" />
         <path d="M 350 80 L 400 280" stroke="url(#connectionGradient)" strokeWidth="2" opacity="0.4" />
         <path d="M 150 80 L 120 200" stroke="url(#connectionGradient)" strokeWidth="2" opacity="0.4" />
-        
+         
         <defs>
           <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0.8" />
@@ -169,49 +217,25 @@ const NetworkDiagram = () => {
 
 export default function TrainSectionThree() {
   const containerRef = useRef(null);
-  
+   
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start center', 'end end'],
   });
-  
-  // Train movement - continues from previous section
+   
+  // Train movement - continues from previous section  
   const trainY = useTransform(scrollYProgress, [0, 1], [50, 350]);
-  
-  // Train glow intensity
+   
+  // Train glow intensity  
   const trainGlow = useTransform(scrollYProgress, [0, 0.5, 1], [0.4, 1, 0.4]);
 
   return (
-    <section ref={containerRef} className='max-w-[1864px] text-left mx-auto  relative overflow-hidden px-5 py-5 md:py-0'>
+    <section ref={containerRef} className='max-w-[1864px] text-left mx-auto relative overflow-hidden px-5 py-5 md:py-0'>
 
       {/* Track and Train Container - Left Side */}
-      <div className="absolute left-0 top-0 w-80 h-full flex justify-center">
-        
-        {/* Background Track SVG */}
-        <div className="relative w-full h-full flex justify-center">
-          
-          {/* Center Rail Gradient */}
-          <div className="absolute inset-0 w-full h-full flex items-center justify-center">
-            <div className="h-full w-[4px] md:w-[6px] bg-[linear-gradient(180deg,#08070C_0%,rgba(139,92,246,0.8)_40%,rgba(139,92,246,0.8)_70%,#08070C_120%)]"></div>
-          </div>
-
-          {/* Animated Dot on Rail */}
-          <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-            <div className="w-8 h-8 rounded-full bg-[#8b5cf6] animate-dot-glow animate-dot-pulse relative">
-              {/* Large Background Glow */}
-              <div className="absolute inset-0 w-20 h-20 -m-6 rounded-full bg-[rgba(139,92,246,0.4)] blur-xl"></div>
-              
-              {/* Medium Glow Ring */}
-              <div className="absolute inset-0 w-12 h-12 -m-2 rounded-full bg-[rgba(139,92,246,0.6)] blur-lg"></div>
-              
-              {/* Core Bright Center */}
-              <div className="absolute inset-1 rounded-full bg-gradient-to-br from-white via-purple-200 to-[#8b5cf6] animate-pulse" style={{animationDuration: '1.5s'}}></div>
-              
-              {/* Inner Shine */}
-              <div className="absolute top-2 left-2 w-3 h-3 rounded-full bg-white/90 animate-pulse" style={{animationDuration: '2s'}}></div>
-            </div>
-          </div>
-        </div>
+      <div className="absolute left-0 top-0 w-80 h-full">
+        {/* Curved Railway Track */}
+        <CurvedTrainTrack glowColor="rgba(139,92,246,0.8)" />
 
         {/* Animated Train */}
         <motion.div
@@ -221,15 +245,15 @@ export default function TrainSectionThree() {
           {/* Train Glow Effect */}
           <motion.div
             className="absolute inset-0 w-32 h-20 -m-8 rounded-full blur-2xl pointer-events-none"
-            style={{ 
+            style={{
               opacity: trainGlow,
               background: 'radial-gradient(ellipse, rgba(139, 92, 246, 0.8) 0%, rgba(139, 92, 246, 0.4) 40%, rgba(139, 92, 246, 0.1) 70%, transparent 100%)'
             }}
           />
-          
+           
           {/* Train SVG */}
-          <img 
-            src="/train3.svg" 
+          <img
+            src="/train3.svg"
             alt="Railway train"
             style={{left:"-90px"}}
             className="w-[120px] h-[260px] md:w-[180px] max-w-fit scrollable-train hidden md:block absolute z-10"
@@ -239,7 +263,7 @@ export default function TrainSectionThree() {
 
       {/* Content Layout */}
       <div className="flex items-center min-h-[80vh]">
-        
+         
         {/* Left Content */}
         <div className="w-1/2 pl-80 pr-8 z-30">
           <h4 className='mb-4 text-lg font-medium text-[#8b5cf6]'>Network and Connect</h4>
@@ -282,34 +306,17 @@ export default function TrainSectionThree() {
         </div>
       </div>
 
-      {/* Custom CSS for dot effects */}
+      {/* Custom CSS for animations */}
       <style jsx>{`
-        @keyframes dotPulse {
+        @keyframes pulse {
           0%, 100% {
+            opacity: 0.6;
             transform: scale(1);
+          }
+          50% {
             opacity: 1;
-          }
-          50% {
             transform: scale(1.2);
-            opacity: 0.8;
           }
-        }
-        
-        @keyframes dotGlow {
-          0%, 100% {
-            box-shadow: 0 0 30px rgba(139, 92, 246, 0.8), 0 0 60px rgba(139, 92, 246, 0.6), 0 0 100px rgba(139, 92, 246, 0.4);
-          }
-          50% {
-            box-shadow: 0 0 40px rgba(139, 92, 246, 1), 0 0 80px rgba(139, 92, 246, 0.8), 0 0 120px rgba(139, 92, 246, 0.6);
-          }
-        }
-        
-        .animate-dot-pulse {
-          animation: dotPulse 2s ease-in-out infinite;
-        }
-        
-        .animate-dot-glow {
-          animation: dotGlow 3s ease-in-out infinite;
         }
       `}</style>
     </section>

@@ -3,7 +3,6 @@ import LogoScrollSection from "@/components/sections/LogoScrollSection";
 import Navbar from "@/components/shared/Navbar";
 import TrainSectionOne from "@/components/sections/TrainSectionOne";
 import TrainSectionTwo from "@/components/sections/TrainSectionTwo";
-import VideoSection from "@/components/ui/VideoSection";
 import TrainSectionThree from "@/components/sections/TrainSectionThree";
 export default function Home() {
   return (
@@ -11,11 +10,8 @@ export default function Home() {
       <Navbar/>
       <Hero/>
       <LogoScrollSection/>
-
       <TrainSectionOne/>
-      <div className=" px-8">
          <TrainSectionTwo/>
-      </div>
       <TrainSectionThree/>
     </div>
   );
