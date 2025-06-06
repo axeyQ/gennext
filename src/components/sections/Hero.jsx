@@ -217,7 +217,7 @@ export default function Hero() {
 
       {/* Scroll-Animated VideoSection */}
       <motion.div
-        className="flex justify-center items-center w-10/12 p-10 border-2 border-amber-50 rounded-3xl relative z-10"
+        className="flex justify-center items-center w-10/12 mt-10 p-10 border-2 border-amber-50 rounded-3xl relative z-10"
         style={{
           scale,
           opacity,

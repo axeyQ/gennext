@@ -24,11 +24,11 @@ export default function HeroSample() {
 
   // Typewriter text options
   const typewriterTexts = [
-    "Railway simplifies your infrastructure stack from servers to observability with a single, scalable, easy-to-use platform.",
-    "Deploy applications instantly with zero configuration and automatic scaling that grows with your business.",
-    "Build full-stack applications with integrated databases, services, and networking - all in one place.",
-    "From prototype to production - Railway handles your entire development lifecycle seamlessly.",
-    "Ship faster with instant deployments, built-in monitoring, and effortless team collaboration."
+    "Railway simplifies your infrastructure stack from servers to observability with a single.",
+    "Deploy applications instantly with zero configuration and automatic .",
+    "Build full-stack applications with integrated databases - all in one place.",
+    "From prototype to production - Railway handles your entire development.",
+    "Ship faster with instant deployments, built-in monitoring team collaboration."
   ];
 
   return (
@@ -186,21 +186,21 @@ export default function HeroSample() {
       `}</style>
 
       {/* Hero Section - Your Original Code with Typewriter */}
-      <section className="relative z-10 min-h-96 py-32 flex items-center justify-start w-full pl-16 overflow-x-clip">
+      <section className="relative z-10 min-h-screen flex items-center justify-start w-full pl-42 overflow-x-clip">
         <div className="text-left flex flex-col justify-start h-full align-items-start">
           <h1 className="font-tight leading-[1.1875] sm:leading-[1.1875] md:leading-[1.1875] text-[32px] sm:text-5xl md:text-6xl max-w-[900px] font-semibold mb-5 tracking-tight text-start">
-            <span className="hidden md:inline">Shipping great products is hard. Scaling infrastructure is easy.</span>
-            <span className="inline md:hidden">Shipping great products is hard. Scaling infrastructure is easy.</span>
+            <span className="hidden md:inline">
+            Step into the future <br/>of design</span>
           </h1>
            
           {/* Updated subtitle with Typewriter effect */}
-          <div className="min-h-[140px] flex items-start justify-start w-full">
+          <div className="min-h-[60px] flex items-start justify-start w-full">
             <TypewriterText 
               texts={typewriterTexts}
               typingSpeed={60}
               deletingSpeed={40}
               pauseDuration={3000}
-              className="text-2xl sm:text-3xl max-w-[860px] text-gray-600 text-start typewriter-container"
+              className=" text-lg max-w-[860px] text-gray-600 text-start typewriter-container"
             />
           </div>
 
@@ -222,8 +222,8 @@ export default function HeroSample() {
                                 transform: 'scale(0.65)',
                                 transformOrigin: 'center center',
                                 position: 'absolute',
-                                top: '-35%',
-                                left: '5%',
+                                top: '-30%',
+                                left: '-5%',
                                 zIndex:100
                             }}
                             title="AI Robot Animation"
