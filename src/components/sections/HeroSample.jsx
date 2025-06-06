@@ -186,7 +186,7 @@ export default function HeroSample() {
       `}</style>
 
       {/* Hero Section - Your Original Code with Typewriter */}
-      <section className="relative z-10 min-h-screen flex items-center justify-start w-full pl-42 overflow-x-clip">
+      <section className="relative z-10 min-h-screen flex items-center justify-start w-full pl-42 overflow-x-clip mb-10">
         <div className="text-left flex flex-col justify-start h-full align-items-start">
           <h1 className="font-tight leading-[1.1875] sm:leading-[1.1875] md:leading-[1.1875] text-[32px] sm:text-5xl md:text-6xl max-w-[900px] font-semibold mb-5 tracking-tight text-start">
             <span className="hidden md:inline">
