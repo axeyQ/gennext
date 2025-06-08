@@ -299,7 +299,7 @@ const PricingSection = () => {
       </div>
 
       {/* Bottom CTA Section */}
-      <div className="relative z-10 text-center mt-16">
+      {/* <div className="relative z-10 text-center mt-16">
         <motion.div
           className="inline-block"
           initial={{ opacity: 0, y: 20 }}
@@ -315,7 +315,7 @@ const PricingSection = () => {
             </button>
           </div>
         </motion.div>
-      </div>
+      </div> */}
     </section>
   );
 };

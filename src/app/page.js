@@ -8,11 +8,12 @@ import FeatureSection from "@/components/sections/FeatureSection";
 import PricingSection from "@/components/sections/PricingSection";
 import TestimonialSection from "@/components/sections/TestimonialSection";
 import Footer from "@/components/shared/Footer";
+import ContactSection from "@/components/sections/ContactSection";
 export default function Home() {
   return (
     <div className="bg-[linear-gradient(180deg,_#040406_50%,_#09080D_100%)]">
       <Navbar/>
-        <HeroSample/>
+        <Hero/>
       <LogoScrollSection/>
       <TrainSectionOne/>
          <TrainSectionTwo/>
@@ -21,6 +22,7 @@ export default function Home() {
         </div>
         <PricingSection/>
         <TestimonialSection/>
+        <ContactSection/>
         <Footer/>
 
     </div>
