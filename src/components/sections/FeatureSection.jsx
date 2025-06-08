@@ -1,12 +1,22 @@
 'use client';
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'framer-motion';
+
 
 const FeatureSection = () => {
   const [hoveredCard, setHoveredCard] = useState('frontend');
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const containerRef = useRef(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start center', 'end end'],
+  });
+  
+  // Train movement - reaches near end with smooth progression
+  const trainY = useTransform(scrollYProgress, [0, 1], [100, 400]);
 
-  // Technical service data positioned in grid layout
+  // Technical service data positioned in grid layout - 6 cards spread out wider
   const cardData = {
     frontend: {
       title: "frontend",
@@ -18,10 +28,10 @@ const FeatureSection = () => {
         "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop",
         "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=400&h=300&fit=crop"
       ],
-      preview: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=200&h=150&fit=crop",
-      gridPosition: { x: 600, y: 80 }, // Top center
+      preview: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=300&h=220&fit=crop",
+      gridPosition: { x: 700, y: 40 }, // Top center
       color: "rgba(255,193,7,1)",
-      position:{left:50, top:-3}
+      position: { left: 40, top: 75 }
     },
     apiGateway: {
       title: "api-gateway",
@@ -33,25 +43,10 @@ const FeatureSection = () => {
         "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=400&h=300&fit=crop",
         "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop"
       ],
-      preview: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=200&h=150&fit=crop",
-      gridPosition: { x: 900, y: 180 }, // Top right
+      preview: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=300&h=220&fit=crop",
+      gridPosition: { x: 1050, y: 180 }, // Top right
       color: "rgba(79,172,254,1)",
-      position:{left:72, top:5}
-    },
-    analytics: {
-      title: "ackee-analytics",
-      url: "ackee-prod.up.railway.app",
-      icon: "📊",
-      status: "Just deployed",
-      images: [
-        "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=300&fit=crop",
-        "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=300&fit=crop",
-        "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&h=300&fit=crop"
-      ],
-      preview: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=200&h=150&fit=crop",
-      gridPosition: { x: 150, y: 220 }, // Left
-      color: "rgba(6,182,212,1)",
-      position:{left:6, top:15}
+      position: { left: 70, top: 0 }
     },
     backend: {
       title: "backend",
@@ -63,10 +58,10 @@ const FeatureSection = () => {
         "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&h=300&fit=crop",
         "https://images.unsplash.com/photo-1666875753105-c63a6f3bdc86?w=400&h=300&fit=crop"
       ],
-      preview: "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=200&h=150&fit=crop",
-      gridPosition: { x: 900, y: 320 }, // Right
+      preview: "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=300&h=220&fit=crop",
+      gridPosition: { x: 1050, y: 320 }, // Right
       color: "rgba(34,197,94,1)",
-      position:{left:74, top:36}
+      position: { left: 83, top: 35 }
     },
     postgres: {
       title: "postgres",
@@ -78,10 +73,10 @@ const FeatureSection = () => {
         "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&h=300&fit=crop",
         "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=300&fit=crop"
       ],
-      preview: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=200&h=150&fit=crop",
-      gridPosition: { x: 400, y: 480 }, // Bottom left
+      preview: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=300&h=220&fit=crop",
+      gridPosition: { x: 300, y: 480 }, // Bottom left
       color: "rgba(139,92,246,1)",
-      position:{left:15, top:80}
+      position: { left: 10, top: 75 }
     },
     redis: {
       title: "redis-cache",
@@ -93,10 +88,10 @@ const FeatureSection = () => {
         "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=300&fit=crop",
         "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=300&fit=crop"
       ],
-      preview: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=200&h=150&fit=crop",
-      gridPosition: { x: 800, y: 480 }, // Bottom right
+      preview: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=300&h=220&fit=crop",
+      gridPosition: { x: 1100, y: 490 }, // Bottom right
       color: "rgba(245,101,101,1)",
-      position:{left:60, top:75}
+      position: { left: 70, top: 75 }
     },
     monitoring: {
       title: "monitoring",
@@ -108,37 +103,22 @@ const FeatureSection = () => {
         "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=300&fit=crop",
         "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&h=300&fit=crop"
       ],
-      preview: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=150&fit=crop",
-      gridPosition: { x: 900, y: 420 }, // Right side
+      preview: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=220&fit=crop",
+      gridPosition: { x: 120, y: 300 }, // Left side
       color: "rgba(168,85,247,1)",
-      position:{left:76, top:60}
-    },
-    worker: {
-      title: "worker-service",
-      url: "worker-prod.up.railway.app",
-      icon: "🔧",
-      status: "Just deployed",
-      images: [
-        "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=300&fit=crop",
-        "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&h=300&fit=crop",
-        "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=300&fit=crop"
-      ],
-      preview: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=200&h=150&fit=crop",
-      gridPosition: { x: 300, y: 180 }, // Top left
-      color: "rgba(251,191,36,1)",
-      position:{left:34,top:5}
+      position: { left: 4, top: 28 }
     }
   };
 
-  // Hub points for linear connections
+  // Hub points for linear connections - spread wider
   const hubPoints = {
-    topHub: { x: 600, y: 200 },
-    leftHub: { x: 450, y: 300 },
-    rightHub: { x: 750, y: 300 },
-    bottomHub: { x: 600, y: 400 }
+    topHub: { x: 700, y: 200 },
+    leftHub: { x: 350, y: 300 },
+    rightHub: { x: 1050, y: 300 },
+    bottomHub: { x: 700, y: 400 }
   };
 
-  const centerPoint = { x: 600, y: 300 };
+  const centerPoint = { x: 700, y: 300 };
 
   // Auto-advance carousel during hover
   useEffect(() => {
@@ -189,8 +169,94 @@ const FeatureSection = () => {
   };
 
   return (
-    <section className='max-w-[1864px] text-left px-5 py-5 md:py-0 mx-auto md:rounded-2xl border-y md:border-x border-white/10 bg-[linear-gradient(180deg,#07060B_50%,#0A090E_100%)] relative h-[100vh] overflow-hidden'>
-      
+    <section ref={containerRef} className='w-full text-left px-2 md:px-8 py-5 md:py-0 mx-auto md:rounded-2xl border-y md:border-x border-white/10 bg-[linear-gradient(180deg,#07060B_50%,#0A090E_100%)] relative h-[100vh] overflow-hidden'>
+            {/* Track and Train Container - Positioned on the left */}
+            <div className="absolute left-0 top-0 w-96 h-full flex justify-center">
+        
+        {/* Background Track SVG */}
+        <div className="relative w-full h-full flex justify-start">
+         
+          
+          {/* Center Rail Gradient */}
+          <div className="absolute inset-0 w-full h-full flex items-center justify-start left-10">
+            <div className=" h-10/12 w-1 md:w-1.5 bg-gradient-to-b from-[#08070C] via-[rgba(202,36,77,0.8)] to-[#08070C]"></div>
+          </div>
+        </div>
+        
+        {/* Animated Train */}
+        <motion.div
+          className="absolute left-10 top-0 z-20 transform -translate-x-1/2"
+          style={{ y: trainY }}
+        >
+         
+          
+          {/* Train SVG */}
+          <img 
+            src="/train1.svg" 
+            alt="Railway train"
+            style={{left:"-88px"}}
+            className="w-[120px] h-[260px] md:w-[180px] max-w-fit scrollable-train hidden md:block absolute z-10 [--train-scroll-distance-start:20px] [--train-scroll-distance:640px] [--train-scroll-distance-fallback:240px] [--train-scroll-distance-mobile:280px] [--train-scroll-exit-percentage:110%]"
+          />
+        </motion.div>
+      </div>
+
+      {/* Curved Track Extension */}
+      <div className="absolute left-0 top-0 w-full h-full overflow-visible pointer-events-none">
+        <svg
+          className="absolute w-full h-full"
+          viewBox="100 -220 2800 800"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <linearGradient id="curveGradient" x1="0%" y1="0%" x2="50%" y2="0%">
+              <stop offset="0%" stopColor="rgba(202,36,77,0.3)" stopOpacity="0.3" />
+              <stop offset="70%" stopColor="rgba(202,36,77,0.6)" stopOpacity="1" />
+              <stop offset="100%" stopColor="rgba(202,36,77,0.3)" stopOpacity="1" />
+            </linearGradient>
+            <linearGradient id="downCurveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="rgba(202,36,77,0.3)" stopOpacity="1" />
+              <stop offset="70%" stopColor="rgba(202,36,77,0.6)" stopOpacity="1" />
+              <stop offset="100%" stopColor="rgba(202,36,77,0.3)" stopOpacity="1" />
+            </linearGradient>
+          </defs>
+          
+          {/* Horizontal curved track */}
+          <path
+            d="M192 760 Q192 800 242 800 L1400 800"
+            stroke="url(#curveGradient)"
+            strokeWidth="4"
+            fill="none"
+            className="drop-shadow-lg"
+          />
+          
+          {/* Downward curved track */}
+          <path
+            d="M1400 800 Q1450 800 1450 850 L1450 1000"
+            stroke="url(#downCurveGradient)"
+            strokeWidth="4"
+            fill="none"
+            className="drop-shadow-lg"
+          />
+          
+          {/* Glow effects */}
+          <path
+            d="M192 760 Q192 800 242 800 L1400 800"
+            stroke="rgba(202,36,77,.4)"
+            strokeWidth="8"
+            fill="none"
+            className="blur-sm"
+          />
+          
+          <path
+            d="M1400 800 Q1450 800 1450 850 L1450 1000"
+            stroke="rgba(202,36,77,.4)"
+            strokeWidth="8"
+            fill="none"
+            className="blur-sm"
+          />
+        </svg>
+      </div>
       {/* Background Grid Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="w-full h-full" style={{
@@ -214,7 +280,7 @@ const FeatureSection = () => {
 
       {/* Linear Network Connections */}
       <div className="absolute inset-0 z-0">
-        <svg className="w-full h-full" viewBox="0 0 1200 600" fill="none">
+        <svg className="w-full h-full" viewBox="0 0 1400 600" fill="none">
           <defs>
             {/* Connection gradients */}
             {Object.entries(cardData).map(([key, card]) => (
@@ -226,235 +292,195 @@ const FeatureSection = () => {
             ))}
           </defs>
 
-          {/* Hub Circles */}
+          {/* Hub Circles - Extended positions */}
           <circle 
             cx={hubPoints.topHub.x} 
-            cy={hubPoints.topHub.y} 
-            r="6" 
+            cy={hubPoints.topHub.y + 220} 
+            r="10" 
             fill={hoveredCard === 'frontend' ? cardData.frontend.color : 'rgba(100,100,100,0.3)'}
             className="transition-all duration-300"
           />
           <circle 
-            cx={hubPoints.leftHub.x} 
+            cx={hubPoints.leftHub.x - 30} 
             cy={hubPoints.leftHub.y} 
-            r="6" 
-            fill={hoveredCard === 'analytics' || hoveredCard === 'worker' ? 'rgba(100,255,200,0.8)' : 'rgba(100,100,100,0.3)'}
+            r="10" 
+            fill={hoveredCard === 'monitoring' ? cardData.monitoring.color : 'rgba(100,100,100,0.3)'}
             className="transition-all duration-300"
           />
           <circle 
-            cx={hubPoints.rightHub.x} 
+            cx={hubPoints.rightHub.x + 30} 
             cy={hubPoints.rightHub.y} 
-            r="6" 
-            fill={hoveredCard === 'apiGateway' || hoveredCard === 'backend' || hoveredCard === 'monitoring' ? 'rgba(100,200,255,0.8)' : 'rgba(100,100,100,0.3)'}
+            r="10" 
+            fill={hoveredCard === 'apiGateway' || hoveredCard === 'backend' ? 'rgba(100,200,255,0.8)' : 'rgba(100,100,100,0.3)'}
             className="transition-all duration-300"
           />
           <circle 
             cx={hubPoints.bottomHub.x} 
-            cy={hubPoints.bottomHub.y} 
-            r="6" 
+            cy={hubPoints.bottomHub.y + 20} 
+            r="10" 
             fill={hoveredCard === 'postgres' || hoveredCard === 'redis' ? 'rgba(200,100,255,0.8)' : 'rgba(100,100,100,0.3)'}
             className="transition-all duration-300"
           />
 
-          {/* Center Hub */}
+          {/* Center Hub - Much Bigger */}
           <circle 
             cx={centerPoint.x} 
             cy={centerPoint.y} 
-            r="8" 
+            r="16" 
             fill="rgba(100,150,255,0.8)"
             stroke="rgba(100,150,255,1)"
-            strokeWidth="2"
+            strokeWidth="4"
             className="drop-shadow-lg"
           />
 
-          {/* Linear Connections - Frontend */}
+          {/* Linear Connections - Frontend - Extended */}
           <line
-            x1={cardData.frontend.gridPosition.x} y1={cardData.frontend.gridPosition.y + 60}
-            x2={cardData.frontend.gridPosition.x} y2={hubPoints.topHub.y}
+            x1={cardData.frontend.gridPosition.x} y1={cardData.frontend.gridPosition.y + 400}
+            x2={cardData.frontend.gridPosition.x} y2={hubPoints.topHub.y - 20}
             stroke={hoveredCard === 'frontend' ? cardData.frontend.color : 'rgba(100,100,100,0.2)'}
-            strokeWidth={hoveredCard === 'frontend' ? '3' : '1.5'}
+            strokeWidth={hoveredCard === 'frontend' ? '5' : '2.5'}
             strokeDasharray="6,3"
             className="transition-all duration-300"
           />
           <line
-            x1={hubPoints.topHub.x} y1={hubPoints.topHub.y}
+            x1={hubPoints.topHub.x} y1={hubPoints.topHub.y - 20}
             x2={centerPoint.x} y2={centerPoint.y}
             stroke={hoveredCard === 'frontend' ? cardData.frontend.color : 'rgba(100,100,100,0.2)'}
-            strokeWidth={hoveredCard === 'frontend' ? '3' : '1.5'}
+            strokeWidth={hoveredCard === 'frontend' ? '5' : '2.5'}
             strokeDasharray="6,3"
             className="transition-all duration-300"
           />
 
-          {/* Linear Connections - API Gateway */}
+          {/* Linear Connections - API Gateway - Extended */}
           <line
-            x1={cardData.apiGateway.gridPosition.x - 70} y1={cardData.apiGateway.gridPosition.y}
-            x2={hubPoints.rightHub.x} y2={cardData.apiGateway.gridPosition.y}
+            x1={cardData.apiGateway.gridPosition.x } y1={cardData.apiGateway.gridPosition.y}
+            x2={hubPoints.rightHub.x } y2={cardData.apiGateway.gridPosition.y}
             stroke={hoveredCard === 'apiGateway' ? cardData.apiGateway.color : 'rgba(100,100,100,0.2)'}
-            strokeWidth={hoveredCard === 'apiGateway' ? '3' : '1.5'}
+            strokeWidth={hoveredCard === 'apiGateway' ? '5' : '2.5'}
             strokeDasharray="8,4"
             className="transition-all duration-300"
           />
           <line
-            x1={hubPoints.rightHub.x} y1={cardData.apiGateway.gridPosition.y}
-            x2={hubPoints.rightHub.x} y2={hubPoints.rightHub.y}
+            x1={hubPoints.rightHub.x + 30} y1={cardData.apiGateway.gridPosition.y + 50}
+            x2={hubPoints.rightHub.x + 30} y2={hubPoints.rightHub.y}
             stroke={hoveredCard === 'apiGateway' ? cardData.apiGateway.color : 'rgba(100,100,100,0.2)'}
-            strokeWidth={hoveredCard === 'apiGateway' ? '3' : '1.5'}
+            strokeWidth={hoveredCard === 'apiGateway' ? '5' : '2.5'}
             strokeDasharray="8,4"
             className="transition-all duration-300"
           />
           <line
-            x1={hubPoints.rightHub.x} y1={hubPoints.rightHub.y}
+            x1={hubPoints.rightHub.x + 30} y1={hubPoints.rightHub.y}
             x2={centerPoint.x} y2={centerPoint.y}
             stroke={hoveredCard === 'apiGateway' ? cardData.apiGateway.color : 'rgba(100,100,100,0.2)'}
-            strokeWidth={hoveredCard === 'apiGateway' ? '3' : '1.5'}
+            strokeWidth={hoveredCard === 'apiGateway' ? '5' : '2.5'}
             strokeDasharray="8,4"
             className="transition-all duration-300"
           />
 
-          {/* Linear Connections - Analytics */}
+          {/* Linear Connections - Backend - Extended */}
           <line
-            x1={cardData.analytics.gridPosition.x + 160} y1={cardData.analytics.gridPosition.y}
-            x2={hubPoints.leftHub.x} y2={cardData.analytics.gridPosition.y}
-            stroke={hoveredCard === 'analytics' ? cardData.analytics.color : 'rgba(100,100,100,0.2)'}
-            strokeWidth={hoveredCard === 'analytics' ? '3' : '1.5'}
-            strokeDasharray="10,5"
-            className="transition-all duration-300"
-          />
-          <line
-            x1={hubPoints.leftHub.x} y1={cardData.analytics.gridPosition.y}
-            x2={hubPoints.leftHub.x} y2={hubPoints.leftHub.y}
-            stroke={hoveredCard === 'analytics' ? cardData.analytics.color : 'rgba(100,100,100,0.2)'}
-            strokeWidth={hoveredCard === 'analytics' ? '3' : '1.5'}
-            strokeDasharray="10,5"
-            className="transition-all duration-300"
-          />
-          <line
-            x1={hubPoints.leftHub.x} y1={hubPoints.leftHub.y}
-            x2={centerPoint.x} y2={centerPoint.y}
-            stroke={hoveredCard === 'analytics' ? cardData.analytics.color : 'rgba(100,100,100,0.2)'}
-            strokeWidth={hoveredCard === 'analytics' ? '3' : '1.5'}
-            strokeDasharray="10,5"
-            className="transition-all duration-300"
-          />
-
-          {/* Linear Connections - Backend */}
-          <line
-            x1={cardData.backend.gridPosition.x - 70} y1={cardData.backend.gridPosition.y}
-            x2={hubPoints.rightHub.x} y2={cardData.backend.gridPosition.y}
+            x1={cardData.backend.gridPosition.x + 30} y1={cardData.backend.gridPosition.y -20}
+            x2={hubPoints.rightHub.x + 100} y2={cardData.backend.gridPosition.y -20}
             stroke={hoveredCard === 'backend' ? cardData.backend.color : 'rgba(100,100,100,0.2)'}
-            strokeWidth={hoveredCard === 'backend' ? '3' : '1.5'}
+            strokeWidth={hoveredCard === 'backend' ? '5' : '2.5'}
             strokeDasharray="12,6"
             className="transition-all duration-300"
           />
           <line
-            x1={hubPoints.rightHub.x} y1={cardData.backend.gridPosition.y}
-            x2={hubPoints.rightHub.x} y2={hubPoints.rightHub.y}
+            x1={hubPoints.rightHub.x + 30} y1={cardData.backend.gridPosition.y}
+            x2={hubPoints.rightHub.x + 30} y2={hubPoints.rightHub.y}
             stroke={hoveredCard === 'backend' ? cardData.backend.color : 'rgba(100,100,100,0.2)'}
-            strokeWidth={hoveredCard === 'backend' ? '3' : '1.5'}
+            strokeWidth={hoveredCard === 'backend' ? '5' : '2.5'}
             strokeDasharray="12,6"
             className="transition-all duration-300"
           />
           <line
-            x1={hubPoints.rightHub.x} y1={hubPoints.rightHub.y}
+            x1={hubPoints.rightHub.x + 30} y1={hubPoints.rightHub.y}
             x2={centerPoint.x} y2={centerPoint.y}
             stroke={hoveredCard === 'backend' ? cardData.backend.color : 'rgba(100,100,100,0.2)'}
-            strokeWidth={hoveredCard === 'backend' ? '3' : '1.5'}
+            strokeWidth={hoveredCard === 'backend' ? '5' : '2.5'}
             strokeDasharray="12,6"
             className="transition-all duration-300"
           />
 
-          {/* Linear Connections - Postgres */}
+          {/* Linear Connections - Postgres - Extended */}
           <line
-            x1={cardData.postgres.gridPosition.x} y1={cardData.postgres.gridPosition.y - 30}
-            x2={cardData.postgres.gridPosition.x} y2={hubPoints.bottomHub.y}
+            x1={cardData.postgres.gridPosition.x} y1={cardData.postgres.gridPosition.y - 50}
+            x2={cardData.postgres.gridPosition.x} y2={hubPoints.bottomHub.y + 20}
             stroke={hoveredCard === 'postgres' ? cardData.postgres.color : 'rgba(100,100,100,0.2)'}
-            strokeWidth={hoveredCard === 'postgres' ? '3' : '1.5'}
+            strokeWidth={hoveredCard === 'postgres' ? '5' : '2.5'}
             strokeDasharray="6,3"
             className="transition-all duration-300"
           />
           <line
-            x1={cardData.postgres.gridPosition.x} y1={hubPoints.bottomHub.y}
-            x2={centerPoint.x} y2={hubPoints.bottomHub.y}
+            x1={cardData.postgres.gridPosition.x} y1={hubPoints.bottomHub.y + 20}
+            x2={centerPoint.x} y2={hubPoints.bottomHub.y + 20}
             stroke={hoveredCard === 'postgres' ? cardData.postgres.color : 'rgba(100,100,100,0.2)'}
-            strokeWidth={hoveredCard === 'postgres' ? '3' : '1.5'}
+            strokeWidth={hoveredCard === 'postgres' ? '5' : '2.5'}
             strokeDasharray="6,3"
             className="transition-all duration-300"
           />
           <line
-            x1={centerPoint.x} y1={hubPoints.bottomHub.y}
+            x1={centerPoint.x} y1={hubPoints.bottomHub.y + 20}
             x2={centerPoint.x} y2={centerPoint.y}
             stroke={hoveredCard === 'postgres' ? cardData.postgres.color : 'rgba(100,100,100,0.2)'}
-            strokeWidth={hoveredCard === 'postgres' ? '3' : '1.5'}
+            strokeWidth={hoveredCard === 'postgres' ? '5' : '2.5'}
             strokeDasharray="6,3"
             className="transition-all duration-300"
           />
 
-          {/* Linear Connections - Redis */}
+          {/* Linear Connections - Redis - Extended */}
           <line
-            x1={cardData.redis.gridPosition.x} y1={cardData.redis.gridPosition.y - 30}
-            x2={cardData.redis.gridPosition.x} y2={hubPoints.bottomHub.y}
+            x1={cardData.redis.gridPosition.x} y1={cardData.redis.gridPosition.y - 50}
+            x2={cardData.redis.gridPosition.x} y2={hubPoints.bottomHub.y + 20}
             stroke={hoveredCard === 'redis' ? cardData.redis.color : 'rgba(100,100,100,0.2)'}
-            strokeWidth={hoveredCard === 'redis' ? '3' : '1.5'}
+            strokeWidth={hoveredCard === 'redis' ? '5' : '2.5'}
             strokeDasharray="8,4"
             className="transition-all duration-300"
           />
           <line
-            x1={cardData.redis.gridPosition.x} y1={hubPoints.bottomHub.y}
-            x2={centerPoint.x} y2={hubPoints.bottomHub.y}
+            x1={cardData.redis.gridPosition.x} y1={hubPoints.bottomHub.y + 20}
+            x2={centerPoint.x} y2={hubPoints.bottomHub.y + 20}
             stroke={hoveredCard === 'redis' ? cardData.redis.color : 'rgba(100,100,100,0.2)'}
-            strokeWidth={hoveredCard === 'redis' ? '3' : '1.5'}
+            strokeWidth={hoveredCard === 'redis' ? '5' : '2.5'}
             strokeDasharray="8,4"
             className="transition-all duration-300"
           />
 
-          {/* Linear Connections - Monitoring */}
+          {/* Linear Connections - Monitoring - Extended */}
           <line
-            x1={cardData.monitoring.gridPosition.x - 70} y1={cardData.monitoring.gridPosition.y}
-            x2={hubPoints.rightHub.x} y2={cardData.monitoring.gridPosition.y}
+            x1={cardData.monitoring.gridPosition.x + 200} y1={cardData.monitoring.gridPosition.y}
+            x2={hubPoints.leftHub.x - 30} y2={cardData.monitoring.gridPosition.y}
             stroke={hoveredCard === 'monitoring' ? cardData.monitoring.color : 'rgba(100,100,100,0.2)'}
-            strokeWidth={hoveredCard === 'monitoring' ? '3' : '1.5'}
+            strokeWidth={hoveredCard === 'monitoring' ? '5' : '2.5'}
             strokeDasharray="10,5"
             className="transition-all duration-300"
           />
           <line
-            x1={hubPoints.rightHub.x} y1={cardData.monitoring.gridPosition.y}
-            x2={hubPoints.rightHub.x} y2={hubPoints.rightHub.y}
+            x1={hubPoints.leftHub.x - 30} y1={cardData.monitoring.gridPosition.y}
+            x2={hubPoints.leftHub.x - 30} y2={hubPoints.leftHub.y}
             stroke={hoveredCard === 'monitoring' ? cardData.monitoring.color : 'rgba(100,100,100,0.2)'}
-            strokeWidth={hoveredCard === 'monitoring' ? '3' : '1.5'}
+            strokeWidth={hoveredCard === 'monitoring' ? '5' : '2.5'}
             strokeDasharray="10,5"
             className="transition-all duration-300"
           />
-
-          {/* Linear Connections - Worker */}
           <line
-            x1={cardData.worker.gridPosition.x + 160} y1={cardData.worker.gridPosition.y}
-            x2={hubPoints.leftHub.x} y2={cardData.worker.gridPosition.y}
-            stroke={hoveredCard === 'worker' ? cardData.worker.color : 'rgba(100,100,100,0.2)'}
-            strokeWidth={hoveredCard === 'worker' ? '3' : '1.5'}
-            strokeDasharray="8,4"
-            className="transition-all duration-300"
-          />
-          <line
-            x1={hubPoints.leftHub.x} y1={cardData.worker.gridPosition.y}
-            x2={hubPoints.leftHub.x} y2={hubPoints.leftHub.y}
-            stroke={hoveredCard === 'worker' ? cardData.worker.color : 'rgba(100,100,100,0.2)'}
-            strokeWidth={hoveredCard === 'worker' ? '3' : '1.5'}
-            strokeDasharray="8,4"
+            x1={hubPoints.leftHub.x - 30} y1={hubPoints.leftHub.y}
+            x2={centerPoint.x} y2={centerPoint.y}
+            stroke={hoveredCard === 'monitoring' ? cardData.monitoring.color : 'rgba(100,100,100,0.2)'}
+            strokeWidth={hoveredCard === 'monitoring' ? '5' : '2.5'}
+            strokeDasharray="10,5"
             className="transition-all duration-300"
           />
         </svg>
       </div>
 
-      {/* Cards Container */}
-      <div className="relative z-10 h-[500px] max-w-5xl mx-auto flex justify-center items-center">
+      {/* Cards Container - Full Width */}
+      <div className="relative z-10 h-[500px] w-full flex justify-center items-start">
         
-        {/* Center Display Card */}
+        {/* Center Display Card - Massive */}
         <motion.div 
-          className=" w-64 h-48 bg-gray-900/90 backdrop-blur-sm border border-gray-700/70 rounded-2xl overflow-hidden shadow-xl"
-          style={{
-            left: `50%`,
-            top: `50%`
-          }}
+          className="w-96 h-72 bg-gray-900/90 backdrop-blur-sm border border-gray-700/70 rounded-3xl overflow-hidden shadow-2xl"
           variants={centerCardVariants}
           initial="initial"
           animate="animate"
@@ -474,16 +500,19 @@ const FeatureSection = () => {
               />
             </AnimatePresence>
             
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-3">
-              <h3 className="text-white text-sm font-semibold">
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-6">
+              <h3 className="text-white text-xl font-bold mb-2">
                 {cardData[hoveredCard]?.title}
               </h3>
-              <div className="flex space-x-1 mt-2">
+              <p className="text-gray-300 text-base mb-4">
+                {cardData[hoveredCard]?.url}
+              </p>
+              <div className="flex space-x-2">
                 {cardData[hoveredCard]?.images.map((_, index) => (
                   <div
                     key={index}
-                    className={`h-0.5 rounded-full transition-all duration-300 ${
-                      index === currentImageIndex ? 'bg-white w-4' : 'bg-white/40 w-2'
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      index === currentImageIndex ? 'bg-white w-8' : 'bg-white/40 w-4'
                     }`}
                   />
                 ))}
@@ -492,14 +521,15 @@ const FeatureSection = () => {
           </div>
         </motion.div>
 
-        {/* Grid-Positioned Service Cards */}
+        {/* Grid-Positioned Service Cards - Much Bigger & Spread Out */}
         {Object.entries(cardData).map(([key, service]) => (
           <motion.div
             key={key}
-            className="absolute w-40 h-28 bg-gray-900/80 backdrop-blur-sm border border-gray-700/60 rounded-xl overflow-hidden cursor-pointer"
+            className="absolute w-64 h-44 bg-gray-900/80 backdrop-blur-sm border border-gray-700/60 rounded-2xl overflow-hidden cursor-pointer"
             style={{
               left: `${service.position.left}%`,
-              top: `${service.position.top}%`
+              top: `${service.position.top}%`,
+              transform: 'translate(-50%, -50%)'
             }}
             variants={serviceCardVariants}
             initial="normal"
@@ -517,18 +547,24 @@ const FeatureSection = () => {
               {/* Overlay with service info */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent">
                 {/* Service icon and title at top */}
-                <div className="absolute top-2 left-2 flex items-center gap-1">
-                  <span className="text-sm">{service.icon}</span>
-                  <span className="text-white text-xs font-medium">{service.title}</span>
+                <div className="absolute top-4 left-4 flex items-center gap-3">
+                  <span className="text-xl">{service.icon}</span>
+                  <span className="text-white text-base font-semibold">{service.title}</span>
                 </div>
                 
-                
+                {/* Status at bottom */}
+                <div className="absolute bottom-4 left-4">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                    <span className="text-sm text-green-400 font-medium">{service.status}</span>
+                  </div>
+                </div>
               </div>
             </div>
 
             {/* Connection Highlight Effect */}
             {hoveredCard === key && (
-              <div className="absolute inset-0 border-2 border-opacity-50 rounded-xl pointer-events-none"
+              <div className="absolute inset-0 border-2 border-opacity-60 rounded-2xl pointer-events-none"
                    style={{ borderColor: service.color }} />
             )}
           </motion.div>

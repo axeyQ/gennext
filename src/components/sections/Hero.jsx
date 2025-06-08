@@ -186,7 +186,7 @@ export default function Hero() {
       `}</style>
 
       {/* Hero Section - Your Original Code with Typewriter */}
-      <section className="relative z-10 px-44 pt-24 pb-32 min-h-11/12 flex items-center justify-start">
+      <section className="relative z-10 px-44 pt-24 pb-28 min-h-11/12 flex items-center justify-center">
         <div className="text-left flex flex-col justify-start h-full align-items-start">
           <h1 className="font-tight leading-[1.1875] sm:leading-[1.1875] md:leading-[1.1875] text-[32px] sm:text-5xl md:text-6xl max-w-[900px] font-semibold mb-5 tracking-tight text-center">
             <span className="hidden md:inline">Shipping great products is hard. Scaling infrastructure is easy.</span>

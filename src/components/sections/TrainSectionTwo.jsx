@@ -44,7 +44,7 @@ export default function TrainSectionTwo() {
         <div className="relative w-full h-full flex justify-center">
           {/* Center Rail Gradient - Vertical track */}
           <div className="absolute inset-0 w-full h-full flex items-center justify-center">
-            <div className="h-full w-[4px] md:w-[6px] bg-[linear-gradient(180deg,#08070C_0%,rgba(194,41,138,0.8)_40%,rgba(194,41,138,0.8)_70%,#08070C_120%)]"></div>
+            <div className=" h-10/12 w-1 md:w-1.5 bg-gradient-to-b from-[#08070C] via-[rgba(202,36,77,0.8)] to-[#08070C]"></div>
           </div>
         </div>
         
@@ -57,7 +57,7 @@ export default function TrainSectionTwo() {
           
           {/* Train SVG */}
           <img 
-            src="/train2.svg" 
+            src="/train1.svg" 
             alt="Railway train"
             style={{left:"-90px"}}
             className="w-[120px] h-[260px] md:w-[180px] max-w-fit scrollable-train hidden md:block absolute z-10"

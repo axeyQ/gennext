@@ -116,9 +116,26 @@ const Footer = () => {
             backgroundSize: '60px 60px'
           }} />
         </div>
+
+        {/* Glassmorphism accent line - moved here */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent z-0"></div>
       </div>
 
-      <div className="relative z-10 max-w-[1864px] mx-auto px-5 py-16">
+      {/* Globe Background - Bottom positioned, 40% visible, full width */}
+      <div className="absolute bottom-0 left-0 right-0 h-80 overflow-hidden opacity-30 z-15">
+        <iframe 
+          src='https://my.spline.design/worldplanet-Ycw6lsObSLXkBssv9Cw7gr7i/' 
+          frameBorder='0' 
+          className="w-full h-[200%] translate-y-0"
+          style={{ 
+            pointerEvents: 'none',
+            transform: 'translateY(0%)' // Shows top 40% of the globe
+          }}
+          title="3D Globe Background"
+        />
+      </div>
+
+      <div className="relative z-20 max-w-[1864px] mx-auto px-5 pt-16">
         <motion.div 
           className="flex flex-col lg:flex-row gap-16"
           variants={containerVariants}
@@ -199,7 +216,7 @@ const Footer = () => {
 
         {/* Bottom Section */}
         <motion.div 
-          className="mt-16 pt-8 border-t border-white/10"
+          className="mt-16 pt-8 pb-16 relative z-10"
           variants={itemVariants}
         >
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
@@ -222,9 +239,6 @@ const Footer = () => {
           </div>
         </motion.div>
       </div>
-
-      {/* Glassmorphism accent line */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
     </footer>
   );
 };
