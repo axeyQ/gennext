@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ChevronDown } from 'lucide-react';
 import Image from 'next/image';
 import Logo from "../../../public/logoAuto.png"
+import Link from 'next/link';
 const Navbar = () => {
   const [hoveredItem, setHoveredItem] = useState(null);
   const [scrolled, setScrolled] = useState(false);
@@ -225,10 +226,10 @@ const Navbar = () => {
     }`}>
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center ">
-            <Image src={Logo} width={30} height={30}/>
+        <Link href={"/"} className="flex items-center ">
+            <Image src={Logo} width={30} height={30} alt='Company Logo'/>
           <span className="text-xl font-medium text-white">utoGen Labs</span>
-        </div>
+        </Link>
 
         {/* Center Navigation */}
         <div className="hidden md:flex items-center space-x-8 relative">

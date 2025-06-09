@@ -149,12 +149,10 @@ const Footer = () => {
           >
             {/* Logo & Brand */}
             <div className="space-y-4">
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center">
                 {/* Logo Placeholder */}
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center">
-                  <Image src={logo} alt='logo' width={100} height={100}/>
-                </div>
-                <span className="text-2xl font-bold text-white">AutoGen Labs</span>
+                  <Image src={logo} alt='logo' width={30} height={30}/>
+                <span className="text-2xl font-bold text-white">utoGen Labs</span>
               </div>
               <p className="text-gray-400 text-sm leading-relaxed">
                 Built to keep your infrastructure in perfect state.

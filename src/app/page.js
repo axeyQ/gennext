@@ -5,7 +5,6 @@ import TrainSectionTwo from "@/components/sections/TrainSectionTwo";
 import FeatureSection from "@/components/sections/FeatureSection";
 import PricingSection from "@/components/sections/PricingSection";
 import TestimonialSection from "@/components/sections/TestimonialSection";
-import Footer from "@/components/shared/Footer";
 import ContactSection from "@/components/sections/ContactSection";
 import AboutUsSection from "@/components/sections/AboutUsSection";
 import AutoGenChatbot from "@/components/ui/AutoGenChatBot";
@@ -19,7 +18,6 @@ import FAQSection from "@/components/sections/FAQSection";
 export default function Home() {
   return (
     <div className="bg-[linear-gradient(180deg,_#040406_50%,_#09080D_100%)]">
-      <Navbar/>
         <Hero/>
       <LogoScrollSection/>
       <ThreeSteps/>
@@ -38,7 +36,6 @@ export default function Home() {
         <AboutUsSection/>
         <FAQSection/>
         <AutoGenChatbot/>
-        <Footer/>
 
     </div>
   );
