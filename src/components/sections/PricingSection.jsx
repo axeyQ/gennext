@@ -8,13 +8,14 @@ const PricingSection = () => {
   const pricingPlans = [
     {
       id: 'starter',
-      name: 'Starter',
+      name: 'Free',
       price: 0,
       period: 'month',
-      description: 'Perfect for hobby projects and learning',
+      description: 'A fast way to get started with AutoGen Labs',
       features: [
-        'Basic Components',
-        'Community Support'
+        '50 agent mode or chat requests per month',
+        '2,000 completions per month',
+        'Access to Claude 3.5 Sonnet, GPT-4.1, and more'
       ],
       buttonText: 'Get Started Free',
       buttonVariant: 'secondary',
@@ -25,11 +26,13 @@ const PricingSection = () => {
       name: 'Pro',
       price: 49,
       period: 'month',
-      description: 'Ideal for production applications',
+      description: 'Unlimited completions and chat with access to more models.',
       features: [
-        'Advanced Components',
-        'Priority Support',
-        'Custom Themes'
+        'Everything in Free and',
+        'Unlimited agent mode and chats with GPT-4.11',
+        'Unlimited code completions',
+        'Access to code review, Claude 3.7/4.0 Sonnet, Gemini 2.5 Pro, and more',
+        '6x more premium requests than Copilot Free to use the latest models, with the option to buy more2'
       ],
       buttonText: 'Start Free Trial',
       buttonVariant: 'primary',
@@ -42,9 +45,10 @@ const PricingSection = () => {
       period: 'month',
       description: 'Built for growing teams and enterprises',
       features: [
-        'All Pro features',
-        'Dedicated support',
-        'Custom Development'
+        'Everything in Pro and',
+        'Access to all models, including Claude Opus 4, o3, and GPT-4.5',
+        '30x more premium requests than Copilot Free to use the latest models, with the option to buy more',
+        'Coding agent (preview)'
       ],
       buttonText: 'Contact Sales',
       buttonVariant: 'secondary',

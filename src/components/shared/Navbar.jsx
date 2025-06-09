@@ -1,7 +1,8 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronDown } from 'lucide-react';
-
+import Image from 'next/image';
+import Logo from "../../../public/logoAuto.png"
 const Navbar = () => {
   const [hoveredItem, setHoveredItem] = useState(null);
   const [scrolled, setScrolled] = useState(false);
@@ -224,14 +225,9 @@ const Navbar = () => {
     }`}>
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 relative">
-            <svg viewBox="0 0 32 32" className="w-full h-full">
-              <circle cx="16" cy="16" r="15" fill="none" stroke="white" strokeWidth="2" />
-              <path d="M8 16h16M12 11l4 5-4 5M20 11l-4 5 4 5" stroke="white" strokeWidth="2" fill="none" />
-            </svg>
-          </div>
-          <span className="text-xl font-medium text-white">Railway</span>
+        <div className="flex items-center ">
+            <Image src={Logo} width={30} height={30}/>
+          <span className="text-xl font-medium text-white">utoGen Labs</span>
         </div>
 
         {/* Center Navigation */}

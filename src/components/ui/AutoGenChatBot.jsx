@@ -95,7 +95,7 @@ const AutoGenChatbot = () => {
 `}</style>
       {/* Floating Chatbot Button */}
       <motion.div
-        className="fixed bottom-6 right-6 z-50 cursor-pointer"
+        className="fixed bottom-6 -right-2 z-50 cursor-pointer"
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ delay: 2, duration: 0.5, type: "spring" }}
