@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send } from 'lucide-react';
+import LazySpline from './LazySpline';
 
 const AutoGenChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -67,7 +68,7 @@ const AutoGenChatbot = () => {
         timestamp: new Date()
       };
       setMessages(prev => [...prev, botMessage]);
-    }, 1500 + Math.random() * 1000); // Random delay between 1.5-2.5 seconds
+    }, 1500 + Math.random() * 1000);
   };
 
   const handleKeyPress = (e) => {
@@ -77,22 +78,39 @@ const AutoGenChatbot = () => {
     }
   };
 
+  // Fallback for floating button (simple gradient circle)
+  const ButtonFallback = () => (
+    <div className="w-20 h-20 md:w-52 md:h-52 rounded-full bg-gradient-to-br from-purple-600 via-cyan-500 to-pink-500 flex items-center justify-center shadow-2xl">
+      <div className="w-12 h-12 md:w-24 md:h-24 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+        <span className="text-2xl md:text-4xl">🤖</span>
+      </div>
+    </div>
+  );
+
+  // Fallback for chat header avatar (simple gradient circle)
+  const AvatarFallback = () => (
+    <div className="w-full h-full rounded-full bg-gradient-to-r from-purple-600 to-cyan-600 flex items-center justify-center">
+      <span className="text-lg">🤖</span>
+    </div>
+  );
+
   return (
     <>
-    <style jsx global>{`
-  iframe[src*="spline.design"] {
-    overflow: hidden !important;
-  }
-  
-  .spline-watermark,
-  [data-spline-watermark],
-  div[style*="position: absolute"][style*="bottom"],
-  div[style*="pointer-events: none"][style*="bottom"] {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-  }
-`}</style>
+      {/* Hide Spline watermarks */}
+      <style jsx global>{`
+        iframe[src*="spline.design"] {
+          overflow: hidden !important;
+        }
+        .spline-watermark,
+        [data-spline-watermark],
+        div[style*="position: absolute"][style*="bottom"],
+        div[style*="pointer-events: none"][style*="bottom"] {
+          display: none !important;
+          visibility: hidden !important;
+          opacity: 0 !important;
+        }
+      `}</style>
+
       {/* Floating Chatbot Button */}
       <motion.div
         className="fixed bottom-6 -right-2 z-50 cursor-pointer"
@@ -105,26 +123,25 @@ const AutoGenChatbot = () => {
           className="relative w-20 h-20 md:w-52 md:h-52  overflow-hidden shadow-2xl  transition-all duration-300 cursor-pointer"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-
         >
-          {/* Spline 3D Robot */}
-          <iframe 
-            src='https://my.spline.design/genkubgreetingrobot-NkmnY3putuQvSKSkMPAUSr16/' 
-            frameBorder='0' 
-            width='100%' 
-            height='100%'
-            className="pointer-events-none"
-            title="AutoGen Chatbot"
+          {/* Lazy-loaded Spline 3D Robot with fallback */}
+          <LazySpline
+            src="https://my.spline.design/genkubgreetingrobot-NkmnY3putuQvSKSkMPAUSr16/"
+            fallback={<ButtonFallback />}
+            delay={5000} // Load after 5 seconds (non-critical)
+            className="w-full h-full"
+            width="100%"
+            height="100%"
             style={{
-  transform: 'scale(1.2)',
-  marginTop: '-10px',
   position:'absolute',
-  top:"50px"
+  top:"26px"
 }}
+            title="AutoGen Chatbot"
+            intersectionDelay={1000}
           />
-          
-          
         </motion.button>
+
+                  
       </motion.div>
 
       {/* Chat Modal */}
@@ -162,13 +179,14 @@ const AutoGenChatbot = () => {
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 rounded-full overflow-hidden bg-gradient-to-r from-purple-600 to-cyan-600 p-0.5">
                     <div className="w-full h-full rounded-full bg-black flex items-center justify-center">
-                      <iframe 
-                        src='https://my.spline.design/genkubgreetingrobot-NkmnY3putuQvSKSkMPAUSr16/' 
-                        frameBorder='0' 
-                        width='100%' 
-                        height='100%'
-                        className="pointer-events-none scale-75"
+                      {/* Lazy-loaded Spline avatar with fallback */}
+                      <LazySpline
+                        src="https://my.spline.design/genkubgreetingrobot-NkmnY3putuQvSKSkMPAUSr16/"
+                        fallback={<AvatarFallback />}
+                        delay={8000} // Load much later (least critical)
+                        className="w-full h-full scale-75"
                         title="AutoGen Assistant"
+                        intersectionDelay={2000}
                       />
                     </div>
                   </div>
@@ -209,7 +227,7 @@ const AutoGenChatbot = () => {
                     </div>
                   </motion.div>
                 ))}
-                
+
                 {/* Typing Indicator */}
                 {isTyping && (
                   <motion.div
@@ -226,7 +244,6 @@ const AutoGenChatbot = () => {
                     </div>
                   </motion.div>
                 )}
-                
                 <div ref={messagesEndRef} />
               </div>
 
@@ -252,14 +269,14 @@ const AutoGenChatbot = () => {
               </div>
 
               {/* Glassmorphism Shine Effect */}
-              <div 
+              <div
                 className="absolute inset-0 rounded-2xl pointer-events-none"
                 style={{
-                  background: `linear-gradient(135deg, 
-                    rgba(255,255,255,0.1) 0%, 
-                    rgba(255,255,255,0.05) 25%, 
-                    transparent 50%, 
-                    rgba(255,255,255,0.05) 75%, 
+                  background: `linear-gradient(135deg,
+                    rgba(255,255,255,0.1) 0%,
+                    rgba(255,255,255,0.05) 25%,
+                    transparent 50%,
+                    rgba(255,255,255,0.05) 75%,
                     rgba(255,255,255,0.1) 100%)`
                 }}
               />

@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
+import { ThumbnailImage } from '../ui/OptimizedImage';
 
 const TestimonialSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -13,7 +13,7 @@ const TestimonialSection = () => {
       name: "Sarah Chen",
       role: "Lead Developer",
       company: "TechFlow Inc.",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face",
+      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face&auto=format&q=80",
       quote: "The deployment process is incredibly smooth. We went from manual deployments taking hours to automated deployments in minutes. The infrastructure management is seamless."
     },
     {
@@ -21,7 +21,7 @@ const TestimonialSection = () => {
       name: "Marcus Rodriguez",
       role: "CTO",
       company: "StartupVenture",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face&auto=format&q=80",
       quote: "Railway has transformed how we think about DevOps. The simplicity of connecting services and databases without complex configuration is game-changing for our small team."
     },
     {
@@ -29,7 +29,7 @@ const TestimonialSection = () => {
       name: "Emma Thompson",
       role: "Full Stack Engineer",
       company: "DataSphere",
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face&auto=format&q=80",
       quote: "I love how quickly I can spin up new environments. The automatic SSL, custom domains, and built-in monitoring save us countless hours every week."
     },
     {
@@ -37,7 +37,7 @@ const TestimonialSection = () => {
       name: "David Park",
       role: "DevOps Engineer",
       company: "CloudNative Solutions",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face",
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face&auto=format&q=80",
       quote: "The networking capabilities are outstanding. Service discovery and inter-service communication just work out of the box. No more complex networking configurations."
     },
     {
@@ -45,7 +45,7 @@ const TestimonialSection = () => {
       name: "Priya Patel",
       role: "Product Manager",
       company: "InnovateLabs",
-      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&crop=face",
+      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&crop=face&auto=format&q=80",
       quote: "From prototype to production, Railway handles our entire development lifecycle. The team collaboration features and deployment previews are incredibly valuable."
     }
   ];
@@ -53,18 +53,18 @@ const TestimonialSection = () => {
   // Auto-advance testimonials
   useEffect(() => {
     if (!isAutoPlaying) return;
-
+    
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % testimonials.length);
     }, 5000);
-
+    
     return () => clearInterval(interval);
   }, [isAutoPlaying, testimonials.length]);
 
   const nextTestimonial = () => {
     setCurrentIndex((prev) => (prev + 1) % testimonials.length);
     setIsAutoPlaying(false);
-    setTimeout(() => setIsAutoPlaying(true), 10000); // Resume auto-play after 10 seconds
+    setTimeout(() => setIsAutoPlaying(true), 10000);
   };
 
   const prevTestimonial = () => {
@@ -74,11 +74,11 @@ const TestimonialSection = () => {
   };
 
   const cardStackVariants = {
-    active: { 
-      scale: 1, 
-      rotate: 0, 
-      x: 0, 
-      y: 0, 
+    active: {
+      scale: 1,
+      rotate: 0,
+      x: 0,
+      y: 0,
       z: 0,
       opacity: 1,
       transition: { duration: 0.5, ease: "easeOut" }
@@ -110,7 +110,6 @@ const TestimonialSection = () => {
 
   return (
     <section className='max-w-[1864px] text-left px-5 py-16 md:py-20 mx-auto relative overflow-hidden'>
-      
       {/* Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#07060B] via-[#0A090E] to-[#0D0B12]" />
       
@@ -120,7 +119,7 @@ const TestimonialSection = () => {
 
       {/* Section Header */}
       <div className="relative z-10 text-center mb-16">
-        <motion.h2 
+        <motion.h2
           className="text-4xl md:text-5xl font-bold text-white mb-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -128,7 +127,7 @@ const TestimonialSection = () => {
         >
           Trusted by Developers
         </motion.h2>
-        <motion.p 
+        <motion.p
           className="text-lg text-gray-400 max-w-2xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -141,7 +140,6 @@ const TestimonialSection = () => {
       {/* Main Content */}
       <div className="relative z-10 max-w-6xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          
           {/* Left Side - Stacked Cards */}
           <div className="relative">
             <div className="relative w-96 h-[450px] mx-auto perspective-1000">
@@ -150,7 +148,7 @@ const TestimonialSection = () => {
                   const relativeIndex = (index - currentIndex + testimonials.length) % testimonials.length;
                   const isActive = relativeIndex === 0;
                   const isVisible = relativeIndex < 5; // Show 5 cards in stack
-
+                  
                   if (!isVisible) return null;
 
                   return (
@@ -167,35 +165,43 @@ const TestimonialSection = () => {
                       layoutId={`card-${testimonial.id}`}
                     >
                       {/* Glass Card */}
-                      <div 
-                        className={`w-full h-full rounded-3xl border overflow-hidden ${
-                          isActive 
+                      <div
+                        className={`w-full h-full rounded-3xl border overflow-hidden 
+                          ${isActive 
                             ? 'border-white/30 shadow-2xl shadow-purple-500/20' 
                             : 'border-white/15 shadow-xl shadow-black/30'
-                        }`}
+                          }`}
                         style={{
-                          background: isActive 
+                          background: isActive
                             ? `linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.08) 100%)`
                             : `linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%)`,
                           backdropFilter: isActive ? "blur(20px)" : "blur(15px)",
                         }}
                       >
-                        {/* Profile Image */}
+                        {/* Optimized Profile Image */}
                         <div className="relative h-64 overflow-hidden">
-                          <Image
-                            width={384}
-                            height={256}
+                          <ThumbnailImage
                             src={testimonial.image}
                             alt={testimonial.name}
+                            width={384}
+                            height={256}
                             className="w-full h-full object-cover"
-                            {...(isActive && relativeIndex === 0 
-                              ? { priority: true } 
-                              : { loading: "lazy" }
+                            priority={isActive && relativeIndex === 0}
+                            quality={85}
+                            sizes="(max-width: 768px) 100vw, 384px"
+                            fallback={() => (
+                              <div className="w-full h-full bg-gradient-to-br from-purple-600/20 to-cyan-600/20 flex items-center justify-center">
+                                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
+                                  <span className="text-2xl font-bold text-white">
+                                    {testimonial.name.charAt(0)}
+                                  </span>
+                                </div>
+                              </div>
                             )}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                         </div>
-                        
+
                         {/* Card Info */}
                         <div className="p-6 text-center">
                           <h3 className="text-xl font-semibold text-white mb-1">
@@ -214,11 +220,11 @@ const TestimonialSection = () => {
                           <div
                             className="absolute inset-0 rounded-3xl pointer-events-none"
                             style={{
-                              background: `linear-gradient(135deg, 
-                                rgba(255,255,255,0.1) 0%, 
-                                rgba(255,255,255,0.05) 25%, 
-                                transparent 50%, 
-                                rgba(255,255,255,0.05) 75%, 
+                              background: `linear-gradient(135deg,
+                                rgba(255,255,255,0.1) 0%,
+                                rgba(255,255,255,0.05) 25%,
+                                transparent 50%,
+                                rgba(255,255,255,0.05) 75%,
                                 rgba(255,255,255,0.1) 100%)`
                             }}
                           />
@@ -275,7 +281,7 @@ const TestimonialSection = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
-
+              
               <button
                 onClick={nextTestimonial}
                 className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 transition-all duration-300 flex items-center justify-center"
@@ -295,11 +301,11 @@ const TestimonialSection = () => {
                       setIsAutoPlaying(false);
                       setTimeout(() => setIsAutoPlaying(true), 10000);
                     }}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      index === currentIndex 
+                    className={`w-2 h-2 rounded-full transition-all duration-300 
+                      ${index === currentIndex 
                         ? 'bg-purple-500 w-8' 
                         : 'bg-white/30 hover:bg-white/50'
-                    }`}
+                      }`}
                   />
                 ))}
               </div>

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import logo from "../../../public/logoAuto.webp"
 import { Mail, Instagram, Music, Twitter, MessageCircle, Linkedin, Bot, Youtube } from 'lucide-react';
+import LazySpline from '../ui/LazySpline';
 
 const Footer = () => {
   const socialLinks = [
@@ -98,6 +99,57 @@ const Footer = () => {
     }
   };
 
+  // Fallback background for the globe (CSS-only)
+  const GlobeFallback = () => (
+    <div className="w-full h-full relative overflow-hidden">
+      {/* Animated gradient globe effect */}
+      <div 
+        className="absolute inset-0 rounded-full opacity-30"
+        style={{
+          background: `
+            radial-gradient(circle at 30% 30%, rgba(139,92,246,0.4) 0%, transparent 30%),
+            radial-gradient(circle at 70% 60%, rgba(6,182,212,0.3) 0%, transparent 35%),
+            radial-gradient(circle at 40% 80%, rgba(236,72,153,0.2) 0%, transparent 40%),
+            conic-gradient(from 0deg, 
+              rgba(139,92,246,0.1), 
+              rgba(6,182,212,0.1), 
+              rgba(236,72,153,0.1), 
+              rgba(139,92,246,0.1)
+            )
+          `
+        }}
+      />
+      
+      {/* Rotating grid pattern */}
+      <div 
+        className="absolute inset-0 opacity-20 animate-spin"
+        style={{
+          animationDuration: '60s',
+          backgroundImage: `
+            radial-gradient(circle at center, transparent 40%, rgba(255,255,255,0.1) 41%, rgba(255,255,255,0.1) 42%, transparent 43%),
+            conic-gradient(from 0deg, transparent 0deg, rgba(255,255,255,0.1) 20deg, transparent 40deg, rgba(255,255,255,0.1) 60deg, transparent 80deg, rgba(255,255,255,0.1) 100deg, transparent 120deg)
+          `
+        }}
+      />
+
+      {/* Pulsing dots */}
+      <div className="absolute inset-0">
+        {[...Array(8)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-2 h-2 bg-purple-400/40 rounded-full animate-pulse"
+            style={{
+              top: `${20 + (i * 10)}%`,
+              left: `${30 + (i * 8)}%`,
+              animationDelay: `${i * 0.5}s`,
+              animationDuration: '3s'
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+
   return (
     <footer className="relative bg-[#0A090E] border-t border-white/10 overflow-hidden">
       {/* Background Elements */}
@@ -116,43 +168,42 @@ const Footer = () => {
             backgroundSize: '60px 60px'
           }} />
         </div>
-
+        
         {/* Glassmorphism accent line */}
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent z-0"></div>
       </div>
 
-      {/* Full Globe Background */}
+      {/* Lazy-loaded Globe Background - Least Critical */}
       <div className="absolute inset-0 flex items-center justify-center opacity-20 z-10">
         <div className="w-[600px] h-[600px] md:w-[800px] md:h-[800px]">
-          <iframe 
-            src='https://my.spline.design/worldplanet-Ycw6lsObSLXkBssv9Cw7gr7i/' 
-            frameBorder='0' 
+          <LazySpline
+            src="https://my.spline.design/worldplanet-Ycw6lsObSLXkBssv9Cw7gr7i/"
+            fallback={<GlobeFallback />}
+            delay={10000} // Load after 10 seconds (very low priority)
             className="w-full h-full"
-            style={{ 
-              pointerEvents: 'none',
-            }}
+            style={{ pointerEvents: 'none' }}
             title="3D Globe Background"
+            intersectionDelay={3000} // Wait 3 seconds after in view
           />
         </div>
       </div>
 
       <div className="relative z-20 max-w-[1864px] mx-auto px-5 pt-16">
-        <motion.div 
+        <motion.div
           className="flex flex-col lg:flex-row gap-16"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
           {/* Left Sidebar */}
-          <motion.div 
+          <motion.div
             className="lg:w-80 space-y-8"
             variants={itemVariants}
           >
             {/* Logo & Brand */}
             <div className="space-y-4">
               <div className="flex items-center">
-                {/* Logo Placeholder */}
-                  <Image src={logo} alt='Company logo' width={30} height={30} loading='lazy'/>
+                <Image src={logo} alt='Company logo' width={30} height={30} loading='lazy'/>
                 <span className="text-2xl font-bold text-white">utoGen Labs</span>
               </div>
               <p className="text-gray-400 text-sm leading-relaxed">
@@ -186,7 +237,7 @@ const Footer = () => {
           <div className="flex-1">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
               {Object.entries(footerSections).map(([key, section], sectionIndex) => (
-                <motion.div 
+                <motion.div
                   key={key}
                   className="space-y-4"
                   variants={itemVariants}
@@ -198,7 +249,7 @@ const Footer = () => {
                   <ul className="space-y-3">
                     {section.links.map((link, linkIndex) => (
                       <li key={linkIndex}>
-                        <a 
+                        <a
                           href="#"
                           className="text-gray-400 hover:text-white text-sm transition-colors duration-200 block"
                         >
@@ -214,7 +265,7 @@ const Footer = () => {
         </motion.div>
 
         {/* Bottom Section */}
-        <motion.div 
+        <motion.div
           className="mt-16 pt-8 pb-16 relative z-10"
           variants={itemVariants}
         >
@@ -222,7 +273,6 @@ const Footer = () => {
             <div className="text-gray-400 text-sm">
               © 2024 AutoGen. All rights reserved.
             </div>
-            
             {/* Additional Legal Links */}
             <div className="flex flex-wrap gap-6 text-sm">
               <a href="#" className="text-gray-400 hover:text-white transition-colors">

@@ -3,18 +3,14 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import { useRef } from 'react';
 
-// Masonry Image Card Component
-const MasonryImageCard = ({ src, alt, className = "", height = "h-64", delay = 0 }) => {
+const MasonryImageCard = ({ src, alt, className = "", height = "h-64", delay = 0, priority = false }) => {
   return (
     <motion.div
-      className={`
-        relative bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden
-        ${height} ${className}
-      `}
+      className={`relative bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden ${height} ${className}`}
       initial={{ opacity: 0, y: 60 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ 
-        duration: 0.8, 
+      transition={{
+        duration: 0.8,
         delay: delay,
         ease: [0.25, 0.46, 0.45, 0.94]
       }}
@@ -24,64 +20,149 @@ const MasonryImageCard = ({ src, alt, className = "", height = "h-64", delay = 0
         className="w-full h-full"
         initial={{ scale: 1.2 }}
         whileInView={{ scale: 1 }}
-        transition={{ 
-          duration: 1.2, 
+        transition={{
+          duration: 1.2,
           delay: delay + 0.2,
           ease: [0.25, 0.46, 0.45, 0.94]
         }}
         viewport={{ once: true }}
       >
         <Image
-          width={400}
-          height={400}
           src={src}
           alt={alt}
-          className="w-full h-full object-cover"
-          loading='lazy'
+          fill={true}
+          className="object-cover"
+          priority={priority}
+          quality={80}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+          loading={priority ? "eager" : "lazy"}
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAX/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
         />
       </motion.div>
     </motion.div>
   );
 };
 
-// Main Component Showcase with train and track
+// Main Component
 export default function TrainSectionTwo() {
   const containerRef = useRef(null);
-  
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start center', 'end end'],
   });
-  
-  // Train movement 
+
+  // Train movement
   const trainY = useTransform(scrollYProgress, [0, 1], [20, 250]);
 
-  // Masonry grid data with varied heights
   const masonryItems = [
-    { id: 1, src: "https://picsum.photos/400/300?random=1", alt: "Create Account Interface", height: "h-48", delay: 0 },
-    { id: 2, src: "https://picsum.photos/400/500?random=2", alt: "Sign In Interface", height: "h-80", delay: 0.1 },
-    { id: 3, src: "https://picsum.photos/400/350?random=3", alt: "Dashboard Overview", height: "h-56", delay: 0.2 },
-    { id: 4, src: "https://picsum.photos/400/600?random=4", alt: "User Profile", height: "h-96", delay: 0.3 },
-    { id: 5, src: "https://picsum.photos/400/250?random=5", alt: "Settings Panel", height: "h-40", delay: 0.4 },
-    { id: 6, src: "https://picsum.photos/400/450?random=6", alt: "Analytics Dashboard", height: "h-72", delay: 0.5 },
-    { id: 7, src: "https://picsum.photos/400/400?random=7", alt: "Team Management", height: "h-64", delay: 0.6 },
-    { id: 8, src: "https://picsum.photos/400/550?random=8", alt: "Security Settings", height: "h-88", delay: 0.7 },
-    { id: 9, src: "https://picsum.photos/400/300?random=9", alt: "Email Verification", height: "h-48", delay: 0.8 },
-    { id: 10, src: "https://picsum.photos/400/500?random=10", alt: "Payment Methods", height: "h-80", delay: 0.9 },
-    { id: 11, src: "https://picsum.photos/400/350?random=11", alt: "Notifications", height: "h-56", delay: 1.0 },
-    { id: 12, src: "https://picsum.photos/400/450?random=12", alt: "API Keys", height: "h-72", delay: 1.1 },
+    { 
+      id: 1, 
+      src: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop&auto=format&q=80", 
+      alt: "Create Account Interface", 
+      height: "h-48", 
+      delay: 0,
+      priority: true 
+    },
+    { 
+      id: 2, 
+      src: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=600&fit=crop&auto=format&q=80", 
+      alt: "Sign In Interface", 
+      height: "h-80", 
+      delay: 0.1,
+      priority: true 
+    },
+    { 
+      id: 3, 
+      src: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&h=500&fit=crop&auto=format&q=80", 
+      alt: "Dashboard Overview", 
+      height: "h-56", 
+      delay: 0.2,
+      priority: false 
+    },
+    { 
+      id: 4, 
+      src: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&h=700&fit=crop&auto=format&q=80", 
+      alt: "User Profile", 
+      height: "h-96", 
+      delay: 0.3,
+      priority: false 
+    },
+    { 
+      id: 5, 
+      src: "https://images.unsplash.com/photo-1587620962725-abab7fe55159?w=600&h=350&fit=crop&auto=format&q=80", 
+      alt: "Settings Panel", 
+      height: "h-40", 
+      delay: 0.4,
+      priority: false 
+    },
+    { 
+      id: 6, 
+      src: "https://images.unsplash.com/photo-1618477388954-7852f32655ec?w=600&h=550&fit=crop&auto=format&q=80", 
+      alt: "Analytics Dashboard", 
+      height: "h-72", 
+      delay: 0.5,
+      priority: false 
+    },
+    { 
+      id: 7, 
+      src: "https://images.unsplash.com/photo-1556075798-4825dfaaf498?w=600&h=500&fit=crop&auto=format&q=80", 
+      alt: "Team Management", 
+      height: "h-64", 
+      delay: 0.6,
+      priority: false 
+    },
+    { 
+      id: 8, 
+      src: "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=600&h=650&fit=crop&auto=format&q=80", 
+      alt: "Security Settings", 
+      height: "h-88", 
+      delay: 0.7,
+      priority: false 
+    },
+    { 
+      id: 9, 
+      src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop&auto=format&q=80", 
+      alt: "Email Verification", 
+      height: "h-48", 
+      delay: 0.8,
+      priority: false 
+    },
+    { 
+      id: 10, 
+      src: "https://images.unsplash.com/photo-1551808525-51a94da548ce?w=600&h=600&fit=crop&auto=format&q=80", 
+      alt: "Payment Methods", 
+      height: "h-80", 
+      delay: 0.9,
+      priority: false 
+    },
+    { 
+      id: 11, 
+      src: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&h=450&fit=crop&auto=format&q=80", 
+      alt: "Notifications", 
+      height: "h-56", 
+      delay: 1.0,
+      priority: false 
+    },
+    { 
+      id: 12, 
+      src: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=600&h=550&fit=crop&auto=format&q=80", 
+      alt: "API Keys", 
+      height: "h-72", 
+      delay: 1.1,
+      priority: false 
+    },
   ];
 
   return (
     <section ref={containerRef} className="relative w-full bg-black py-24 overflow-hidden">
       {/* Track and Train Container - Positioned on the right */}
       <div className="absolute right-0 top-0 w-35 h-full flex justify-center">
-        
         {/* Track */}
         <div className="relative w-full h-full flex justify-center">
           {/* Center Rail Gradient - Vertical track */}
           <div className="absolute inset-0 w-full h-full flex items-center justify-center">
-            <div className=" h-10/12 w-1 md:w-1.5 bg-gradient-to-b from-[#08070C] via-[rgba(202,36,77,0.8)] to-[#08070C]"></div>
+            <div className="h-10/12 w-1 md:w-1.5 bg-gradient-to-b from-[#08070C] via-[rgba(202,36,77,0.8)] to-[#08070C]"></div>
           </div>
         </div>
         
@@ -90,22 +171,23 @@ export default function TrainSectionTwo() {
           className="absolute left-1/2 top-0 z-20 transform -translate-x-1/2"
           style={{ y: trainY }}
         >
-          {/* Train SVG */}
+          {/* Optimized Train SVG */}
           <Image
             width={180}
-            height={260} 
-            loading="lazy"
-            src="/train1.svg" 
+            height={260}
+            src="/train1.svg"
             alt="Railway train"
             style={{left:"-90px"}}
             className="w-[120px] h-[260px] md:w-[180px] max-w-fit scrollable-train hidden md:block absolute z-10"
+            priority={false}
+            loading="lazy"
           />
         </motion.div>
       </div>
 
       <div className="relative z-10">
         {/* Header */}
-        <motion.div 
+        <motion.div
           className="max-w-7xl mx-auto px-6 mb-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -121,11 +203,11 @@ export default function TrainSectionTwo() {
           </p>
         </motion.div>
 
-        {/* Masonry Container */}
+        {/* Optimized Masonry Container with Edge Clipping */}
         <div className="relative overflow-hidden">
           <div className="lg:px-24">
+            {/* Extended container for edge clipping */}
             <div className="relative -mx-16 md:-mx-24 lg:-mx-32">
-              
               {/* Masonry Grid */}
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 auto-rows-min">
                 {masonryItems.map((item) => (
@@ -135,13 +217,16 @@ export default function TrainSectionTwo() {
                     alt={item.alt}
                     height={item.height}
                     delay={item.delay}
+                    priority={item.priority}
                     className="w-full"
                   />
                 ))}
               </div>
 
+              {/* Left Edge Fade */}
               <div className="absolute left-0 top-0 bottom-0 w-16 md:w-24 lg:w-32 bg-gradient-to-r from-black via-black/80 to-transparent pointer-events-none z-10" />
               
+              {/* Right Edge Fade */}
               <div className="absolute right-0 top-0 bottom-0 w-16 md:w-24 lg:w-32 bg-gradient-to-l from-black via-black/80 to-transparent pointer-events-none z-10" />
             </div>
           </div>
