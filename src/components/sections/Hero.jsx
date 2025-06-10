@@ -44,11 +44,6 @@ const CopilotUIComponent = () => {
           <span>Add Context...</span>
         </button>
         
-        <div className="flex items-center gap-2 px-3 py-1.5 bg-[#0e639c] rounded text-white text-sm">
-          <FileText size={14} />
-          <span className="font-medium">autogen-config.js</span>
-          <span className="text-xs text-blue-200">Current File</span>
-        </div>
         
         {/* Right Side - Icons */}
         <div className="flex items-center gap-2">
@@ -231,7 +226,7 @@ export default function Hero() {
             animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 30 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
           >
-            AutoGen Free in Visual Studio 2025
+            AutoGen Labs Free in Visual Studio 2025
           </motion.h1>
 
           {/* Copilot UI Component - Load immediately */}
