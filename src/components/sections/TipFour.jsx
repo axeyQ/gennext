@@ -1,7 +1,8 @@
 'use client';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
-import { Image, Play } from 'lucide-react';
+import { Play } from 'lucide-react';
+import Image from 'next/image';
 
 // Main Component Showcase with train and track
 export default function TipFour() {
@@ -35,7 +36,7 @@ export default function TipFour() {
           style={{ y: trainY }}
         >
           {/* Train SVG */}
-          <Image
+          <Image 
             width={180}
             height={260} 
             loading="lazy"
