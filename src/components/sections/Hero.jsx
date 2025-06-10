@@ -46,7 +46,11 @@ const CopilotUIComponent = () => {
           <span>Add Context...</span>
         </button>
 
-       
+        <div className="flex items-center gap-2 px-3 py-1.5 bg-[#0e639c] rounded text-white text-sm">
+          <FileText size={14} />
+          <span className="font-medium">autogen-config.js</span>
+          <span className="text-xs text-blue-200">Current File</span>
+        </div>
 
         {/* Right Side - Icons */}
         <div className="flex items-center gap-2">
@@ -113,25 +117,39 @@ const CopilotUIComponent = () => {
 
 export default function Hero() {
   const containerRef = useRef(null);
+  const [isLoaded, setIsLoaded] = useState(false);
    
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end start']
   });
    
-  // Scale animation - starts small and scales up as you scroll
+  // Scale animation - starts small and scales up as you scroll  
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 1.1]);
    
-  // Opacity fade-in effect
+  // Optional: Add some opacity fade-in effect  
   const opacity = useTransform(scrollYProgress, [0, 0.3], [0.6, 1]);
    
-  // Y movement for parallax effect - starts higher up
+  // Optional: Add Y movement for parallax effect - starts higher up  
   const y = useTransform(scrollYProgress, [0, 1], [-100, -50]);
+
+  // Trigger initial animations on mount
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div ref={containerRef} className="min-h-screen bg-[linear-gradient(180deg,_#040406_50%,_#09080D_100%)] text-white relative flex flex-col justify-between items-center">
-      {/* Circuit Board Background */}
-      <div className="absolute inset-0 overflow-hidden">
+      {/* Circuit Board Background - Only in Hero Section */}
+      <motion.div 
+        className="absolute inset-0 overflow-hidden"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isLoaded ? 1 : 0 }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
+      >
         {/* Static Circuit Pattern */}
         <div
           className="absolute inset-0 opacity-10"
@@ -218,7 +236,7 @@ export default function Hero() {
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-green-500/10 rounded-full blur-3xl animate-pulse" style={{animationDuration: '8s'}} />
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse" style={{animationDuration: '12s'}} />
         </div>
-      </div>
+      </motion.div>
 
       {/* CSS Animations */}
       <style jsx>{`
@@ -274,30 +292,67 @@ export default function Hero() {
         }
       `}</style>
 
-      {/* Hero Section */}
-      <section className="relative z-10 px-8 md:px-44 pt-32 pb-8 min-h-11/12 flex items-center justify-center w-full">
+      <motion.section 
+        className="relative z-10 px-8 md:px-44 pt-32 pb-8 min-h-11/12 flex items-center justify-center w-full"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isLoaded ? 1 : 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
         <div className="text-center flex flex-col justify-start h-full items-center w-full">
-          <h1 className="font-tight leading-[1.1875] sm:leading-[1.1875] md:leading-[1.1875] text-[32px] sm:text-5xl md:text-6xl max-w-[900px] font-semibold mb-5 tracking-tight text-center w-full">
-            <span className="hidden md:inline">AutoGen Free in Visual Studio 2022</span>
-          </h1>
+          <motion.h1 
+            className="font-tight leading-[1.1875] sm:leading-[1.1875] md:leading-[1.1875] text-[32px] sm:text-5xl md:text-6xl max-w-[900px] font-semibold mb-5 tracking-tight text-center w-full"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 30 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+          >
+            <span className="hidden md:inline">AutoGen Free in Visual Studio 2025</span>
+          </motion.h1>
            
-          {/* Copilot UI Component replacing TypewriterText */}
-          <div className="mb-8 flex items-start justify-center w-full">
+          {/* Copilot UI Component */}
+          <motion.div 
+            className="mb-8 flex items-start justify-center w-full"
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={{ 
+              opacity: isLoaded ? 1 : 0, 
+              y: isLoaded ? 0 : 50,
+              scale: isLoaded ? 1 : 0.9 
+            }}
+            transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
+          >
             <CopilotUIComponent />
-          </div>
+          </motion.div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
-            <button className="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105">
+          {/* Animated Buttons */}
+          <motion.div 
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 30 }}
+            transition={{ duration: 0.8, delay: 1, ease: "easeOut" }}
+          >
+            <motion.button 
+              className="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: isLoaded ? 1 : 0, x: isLoaded ? 0 : -20 }}
+              transition={{ duration: 0.6, delay: 1.2 }}
+            >
               Download in Visual Studio
-            </button>
-            <button className="bg-gray-800 hover:bg-gray-700 px-6 py-3 rounded-lg font-medium border border-gray-700 transition-colors">
+            </motion.button>
+            <motion.button 
+              className="bg-gray-800 hover:bg-gray-700 px-6 py-3 rounded-lg font-medium border border-gray-700 transition-colors"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: isLoaded ? 1 : 0, x: isLoaded ? 0 : 20 }}
+              transition={{ duration: 0.6, delay: 1.4 }}
+            >
               Get Started
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* Scroll-Animated VideoSection */}
       <motion.div
         className="flex justify-center items-center w-10/12 mt-10 p-10 border-2 border-amber-50 rounded-3xl relative z-10"
         style={{
@@ -305,6 +360,13 @@ export default function Hero() {
           opacity,
           y
         }}
+        initial={{ opacity: 0, y: 100, scale: 0.8 }}
+        animate={{ 
+          opacity: isLoaded ? 1 : 0, 
+          y: isLoaded ? 0 : 100,
+          scale: isLoaded ? 1 : 0.8
+        }}
+        transition={{ duration: 1.2, delay: 1.6, ease: "easeOut" }}
       >
         <VideoSection/>
       </motion.div>

@@ -2,6 +2,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { Play } from 'lucide-react';
+import Image from 'next/image';
 
 export default function TipOne() {
   const containerRef = useRef(null);
@@ -21,7 +22,9 @@ export default function TipOne() {
         
         {/* Background Track SVG */}
         <div className="relative w-full h-full flex justify-center">
-          <img 
+          <Image
+            width={250}
+            height={400}
             src="/track1.svg" 
             alt="Railway tracks" 
             loading="lazy" 
@@ -40,7 +43,10 @@ export default function TipOne() {
           style={{ y: trainY }}
         >
           {/* Train SVG */}
-          <img 
+          <Image
+            width={180}
+            height={260} 
+            loading="lazy" 
             src="/train1.svg" 
             alt="Railway train"
             style={{left:"-90px"}}

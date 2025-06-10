@@ -2,6 +2,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { Play } from 'lucide-react';
+import Image from 'next/image';
 
 export default function TipFive() {
   const containerRef = useRef(null);
@@ -11,7 +12,7 @@ export default function TipFive() {
     offset: ['start center', 'end end'],
   });
   
-  // Train movement - reaches near end with smooth progression
+  // Train movement 
   const trainY = useTransform(scrollYProgress, [0, 1], [100, 600]);
 
   return (
@@ -35,7 +36,10 @@ export default function TipFive() {
           style={{ y: trainY }}
         >
           {/* Train SVG */}
-          <img 
+          <Image
+            width={180}
+            height={260} 
+            loading="lazy"
             src="/train1.svg" 
             alt="Railway train"
             style={{left:"-90px"}}

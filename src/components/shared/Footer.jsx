@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import logo from "../../../public/logoAuto.png"
+import logo from "../../../public/logoAuto.webp"
 import { Mail, Instagram, Music, Twitter, MessageCircle, Linkedin, Bot, Youtube } from 'lucide-react';
 
 const Footer = () => {
@@ -117,22 +117,23 @@ const Footer = () => {
           }} />
         </div>
 
-        {/* Glassmorphism accent line - moved here */}
+        {/* Glassmorphism accent line */}
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent z-0"></div>
       </div>
 
-      {/* Globe Background - Bottom positioned, 40% visible, full width */}
-      <div className="absolute bottom-0 left-0 right-0 h-80 overflow-hidden opacity-30 z-15">
-        <iframe 
-          src='https://my.spline.design/worldplanet-Ycw6lsObSLXkBssv9Cw7gr7i/' 
-          frameBorder='0' 
-          className="w-full h-[200%] translate-y-0"
-          style={{ 
-            pointerEvents: 'none',
-            transform: 'translateY(0%)' // Shows top 40% of the globe
-          }}
-          title="3D Globe Background"
-        />
+      {/* Full Globe Background */}
+      <div className="absolute inset-0 flex items-center justify-center opacity-20 z-10">
+        <div className="w-[600px] h-[600px] md:w-[800px] md:h-[800px]">
+          <iframe 
+            src='https://my.spline.design/worldplanet-Ycw6lsObSLXkBssv9Cw7gr7i/' 
+            frameBorder='0' 
+            className="w-full h-full"
+            style={{ 
+              pointerEvents: 'none',
+            }}
+            title="3D Globe Background"
+          />
+        </div>
       </div>
 
       <div className="relative z-20 max-w-[1864px] mx-auto px-5 pt-16">
@@ -151,7 +152,7 @@ const Footer = () => {
             <div className="space-y-4">
               <div className="flex items-center">
                 {/* Logo Placeholder */}
-                  <Image src={logo} alt='logo' width={30} height={30}/>
+                  <Image src={logo} alt='Company logo' width={30} height={30} loading='lazy'/>
                 <span className="text-2xl font-bold text-white">utoGen Labs</span>
               </div>
               <p className="text-gray-400 text-sm leading-relaxed">

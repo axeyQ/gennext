@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image';
 import React from 'react';
 
 export default function LogoScrollSection() {
@@ -141,7 +142,7 @@ export default function LogoScrollSection() {
   return (
     <section className="bg-black py-20 overflow-hidden">
       <div className="relative">
-        {/* Top Row - Moving Left (Slower) */}
+        {/* Top Row */}
         <div className="mb-8">
           <div className="flex animate-scroll-left">
             {[...topRowLogos, ...topRowLogos, ...topRowLogos].map((company, index) => (
@@ -152,12 +153,14 @@ export default function LogoScrollSection() {
                 <div className="flex items-center gap-3">
                   {/* Logo Image with Fallback */}
                   <div className="relative w-8 h-8 rounded-lg overflow-hidden">
-                    <img 
+                    <Image
+                      width={32}
+                      height={32} 
                       src={company.logo} 
                       alt={`${company.name} logo`}
                       className="w-full h-full object-cover"
+                      loading="lazy"
                       onError={(e) => {
-                        // Fallback to colored circle if image fails to load
                         e.target.style.display = 'none';
                         e.target.nextSibling.style.display = 'flex';
                       }}
@@ -179,7 +182,7 @@ export default function LogoScrollSection() {
           </div>
         </div>
 
-        {/* Bottom Row - Moving Right (Faster) */}
+        {/* Bottom Row*/}
         <div>
           <div className="flex animate-scroll-right">
             {[...bottomRowLogos, ...bottomRowLogos, ...bottomRowLogos].map((company, index) => (
@@ -190,12 +193,14 @@ export default function LogoScrollSection() {
                 <div className="flex items-center gap-3">
                   {/* Logo Image with Fallback */}
                   <div className="relative w-8 h-8 rounded-lg overflow-hidden">
-                    <img 
+                    <Image
+                      width={32}
+                      height={32}
                       src={company.logo} 
                       alt={`${company.name} logo`}
                       className="w-full h-full object-cover"
+                      loading="lazy"
                       onError={(e) => {
-                        // Fallback to colored circle if image fails to load
                         e.target.style.display = 'none';
                         e.target.nextSibling.style.display = 'flex';
                       }}

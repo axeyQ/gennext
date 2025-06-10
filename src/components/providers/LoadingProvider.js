@@ -26,11 +26,10 @@ export const LoadingProvider = ({ children }) => {
     setLoadingProgress(Math.min(Math.max(progress, 0), 100));
     if (stage) setLoadingStage(stage);
     
-    // Auto-hide loading when progress reaches 100%
     if (progress >= 100) {
       setTimeout(() => {
         setIsLoading(false);
-      }, 800); // Small delay for smooth transition
+      }, 800); 
     }
   }, []);
 
@@ -45,12 +44,10 @@ export const LoadingProvider = ({ children }) => {
       const newCompleted = new Set(prev);
       newCompleted.add(stageName);
       
-      // Calculate progress based on completed stages
       const progress = (newCompleted.size / totalStages) * 100;
       setLoadingProgress(progress);
       setLoadingStage(`Completed: ${stageName}`);
       
-      // Auto-complete loading when all stages are done
       if (newCompleted.size >= totalStages) {
         setTimeout(() => setIsLoading(false), 500);
       }
@@ -72,7 +69,6 @@ export const LoadingProvider = ({ children }) => {
 
 
   useEffect(() => {
-    // Fallback: Auto-complete loading after 5 seconds
     const fallbackTimer = setTimeout(() => {
       if (isLoading) {
         console.warn('Loading took too long, auto-completing...');

@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 
 const TestimonialSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -181,10 +182,16 @@ const TestimonialSection = () => {
                       >
                         {/* Profile Image */}
                         <div className="relative h-64 overflow-hidden">
-                          <img
+                          <Image
+                            width={384}
+                            height={256}
                             src={testimonial.image}
                             alt={testimonial.name}
                             className="w-full h-full object-cover"
+                            {...(isActive && relativeIndex === 0 
+                              ? { priority: true } 
+                              : { loading: "lazy" }
+                            )}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                         </div>

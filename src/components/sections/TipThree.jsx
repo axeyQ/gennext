@@ -2,6 +2,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { Play } from 'lucide-react';
+import Image from 'next/image';
 
 export default function TipThree() {
   const containerRef = useRef(null);
@@ -35,7 +36,10 @@ export default function TipThree() {
           style={{ y: trainY }}
         >
           {/* Train SVG */}
-          <img 
+          <Image
+            width={180}
+            height={260} 
+            loading="lazy"
             src="/train1.svg" 
             alt="Railway train"
             style={{left:"-90px"}}

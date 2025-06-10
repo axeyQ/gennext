@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronDown } from 'lucide-react';
 import Image from 'next/image';
-import Logo from "../../../public/logoAuto.png"
+import Logo from "../../../public/logoAuto.webp"
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 
@@ -39,13 +39,11 @@ const Navbar = () => {
 
   // Smooth scroll to section function
   const scrollToSection = (sectionId) => {
-    // If we're not on the home page, navigate to home first
     if (pathname !== '/') {
       router.push(`/#${sectionId}`);
       return;
     }
 
-    // If we're on home page, scroll to section
     const element = document.getElementById(sectionId);
     if (element) {
       const navbarHeight = 80; // Adjust based on your navbar height
@@ -180,7 +178,6 @@ const Navbar = () => {
     { name: 'Components', hasDropdown: false, href: '#' }
   ];
 
-  // Handle URL hash on page load (for direct links like example.com/#pricing)
   useEffect(() => {
     if (typeof window !== 'undefined' && pathname === '/') {
       const hash = window.location.hash.replace('#', '');
@@ -200,7 +197,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <Link href={"/"} className="flex items-center ">
-            <Image src={Logo} width={30} height={30} alt='Company Logo'/>
+            <Image src={Logo} width={30} height={30} alt='Company Logo' loading='lazy'/>
           <span className="text-xl font-medium text-white">utoGen Labs</span>
         </Link>
 
@@ -213,7 +210,6 @@ const Navbar = () => {
               onMouseEnter={() => item.hasDropdown && handleMouseEnter(item.name)}
               onMouseLeave={handleMouseLeave}
             >
-              {/* Render different elements based on item type */}
               {item.hasDropdown ? (
                 <button className="flex items-center space-x-1 text-gray-300 hover:text-white transition-colors py-2">
                   <span className="text-sm font-medium">{item.name}</span>

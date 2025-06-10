@@ -81,10 +81,9 @@ export const useComponentLoading = (componentName) => {
   const { markComponentLoaded } = useProgressiveLoading();
 
   useEffect(() => {
-    // Mark component as loaded when it mounts
     const timer = setTimeout(() => {
       markComponentLoaded(componentName);
-    }, 100); // Small delay to ensure component is fully rendered
+    }, 100);
 
     return () => clearTimeout(timer);
   }, [componentName, markComponentLoaded]);
@@ -104,7 +103,7 @@ export const useImageLoading = () => {
         resolve(true);
       };
       img.onerror = () => {
-        markImageLoaded(imageName || 'image'); // Mark as loaded even on error
+        markImageLoaded(imageName || 'image'); 
         resolve(false);
       };
       img.src = imageSrc;

@@ -301,25 +301,6 @@ const PricingSection = () => {
           </motion.div>
         ))}
       </div>
-
-      {/* Bottom CTA Section */}
-      {/* <div className="relative z-10 text-center mt-16">
-        <motion.div
-          className="inline-block"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-        >
-          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
-            <p className="text-gray-300 mb-4">
-              Need a custom solution? <span className="text-white font-semibold">Enterprise plans</span> available.
-            </p>
-            <button className="text-purple-400 hover:text-purple-300 font-semibold transition-colors">
-              Contact our team →
-            </button>
-          </div>
-        </motion.div>
-      </div> */}
     </section>
   );
 };

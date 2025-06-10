@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'framer-motion';
-
+import Image from 'next/image';
 
 const FeatureSection = () => {
   const [hoveredCard, setHoveredCard] = useState('frontend');
@@ -13,10 +13,9 @@ const FeatureSection = () => {
     offset: ['start center', 'end end'],
   });
   
-  // Train movement - reaches near end with smooth progression
+  // Train movement
   const trainY = useTransform(scrollYProgress, [0, 1], [100, 400]);
 
-  // Technical service data positioned in grid layout - 6 cards spread out wider
   const cardData = {
     frontend: {
       title: "frontend",
@@ -110,7 +109,7 @@ const FeatureSection = () => {
     }
   };
 
-  // Hub points for linear connections - spread wider
+  // Hub points for linear connections
   const hubPoints = {
     topHub: { x: 700, y: 200 },
     leftHub: { x: 350, y: 300 },
@@ -170,12 +169,11 @@ const FeatureSection = () => {
 
   return (
     <section ref={containerRef} className='w-full text-left px-2 md:px-8 py-5 md:py-0 mx-auto md:rounded-2xl border-y md:border-x border-white/10 bg-[linear-gradient(180deg,#07060B_50%,#0A090E_100%)] relative h-[100vh] overflow-hidden'>
-            {/* Track and Train Container - Positioned on the left */}
-            <div className="absolute left-0 top-0 w-96 h-full flex justify-center">
+      {/* Track and Train Container - Positioned on the left */}
+      <div className="absolute left-0 top-0 w-96 h-full flex justify-center">
         
         {/* Background Track SVG */}
         <div className="relative w-full h-full flex justify-start">
-         
           
           {/* Center Rail Gradient */}
           <div className="absolute inset-0 w-full h-full flex items-center justify-start left-10">
@@ -188,14 +186,17 @@ const FeatureSection = () => {
           className="absolute left-10 top-0 z-20 transform -translate-x-1/2"
           style={{ y: trainY }}
         >
-         
           
           {/* Train SVG */}
-          <img 
+          <Image 
             src="/train1.svg" 
             alt="Railway train"
             style={{left:"-88px"}}
             className="w-[120px] h-[260px] md:w-[180px] max-w-fit scrollable-train hidden md:block absolute z-10 [--train-scroll-distance-start:20px] [--train-scroll-distance:640px] [--train-scroll-distance-fallback:240px] [--train-scroll-distance-mobile:280px] [--train-scroll-exit-percentage:110%]"
+            width={180}
+            height={260}
+            loading="lazy"
+            priority={false}
           />
         </motion.div>
       </div>
@@ -257,6 +258,7 @@ const FeatureSection = () => {
           />
         </svg>
       </div>
+
       {/* Background Grid Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="w-full h-full" style={{
@@ -292,7 +294,7 @@ const FeatureSection = () => {
             ))}
           </defs>
 
-          {/* Hub Circles - Extended positions */}
+          {/* Hub Circles */}
           <circle 
             cx={hubPoints.topHub.x} 
             cy={hubPoints.topHub.y + 220} 
@@ -322,7 +324,7 @@ const FeatureSection = () => {
             className="transition-all duration-300"
           />
 
-          {/* Center Hub - Much Bigger */}
+          {/* Center Hub */}
           <circle 
             cx={centerPoint.x} 
             cy={centerPoint.y} 
@@ -333,7 +335,7 @@ const FeatureSection = () => {
             className="drop-shadow-lg"
           />
 
-          {/* Linear Connections - Frontend - Extended */}
+          {/* Linear Connections - Frontend  */}
           <line
             x1={cardData.frontend.gridPosition.x} y1={cardData.frontend.gridPosition.y + 400}
             x2={cardData.frontend.gridPosition.x} y2={hubPoints.topHub.y - 20}
@@ -351,7 +353,7 @@ const FeatureSection = () => {
             className="transition-all duration-300"
           />
 
-          {/* Linear Connections - API Gateway - Extended */}
+          {/* Linear Connections - API Gateway  */}
           <line
             x1={cardData.apiGateway.gridPosition.x } y1={cardData.apiGateway.gridPosition.y}
             x2={hubPoints.rightHub.x } y2={cardData.apiGateway.gridPosition.y}
@@ -377,7 +379,7 @@ const FeatureSection = () => {
             className="transition-all duration-300"
           />
 
-          {/* Linear Connections - Backend - Extended */}
+          {/* Linear Connections - Backend  */}
           <line
             x1={cardData.backend.gridPosition.x + 30} y1={cardData.backend.gridPosition.y -20}
             x2={hubPoints.rightHub.x + 100} y2={cardData.backend.gridPosition.y -20}
@@ -403,7 +405,7 @@ const FeatureSection = () => {
             className="transition-all duration-300"
           />
 
-          {/* Linear Connections - Postgres - Extended */}
+          {/* Linear Connections - Postgres  */}
           <line
             x1={cardData.postgres.gridPosition.x} y1={cardData.postgres.gridPosition.y - 50}
             x2={cardData.postgres.gridPosition.x} y2={hubPoints.bottomHub.y + 20}
@@ -429,7 +431,7 @@ const FeatureSection = () => {
             className="transition-all duration-300"
           />
 
-          {/* Linear Connections - Redis - Extended */}
+          {/* Linear Connections - Redis  */}
           <line
             x1={cardData.redis.gridPosition.x} y1={cardData.redis.gridPosition.y - 50}
             x2={cardData.redis.gridPosition.x} y2={hubPoints.bottomHub.y + 20}
@@ -475,10 +477,10 @@ const FeatureSection = () => {
         </svg>
       </div>
 
-      {/* Cards Container - Full Width */}
+      {/* Cards Container */}
       <div className="relative z-10 h-[500px] w-full flex justify-center items-start">
         
-        {/* Center Display Card - Massive */}
+        {/* Center Display Card */}
         <motion.div 
           className="w-96 h-72 bg-gray-900/90 backdrop-blur-sm border border-gray-700/70 rounded-3xl overflow-hidden shadow-2xl"
           variants={centerCardVariants}
@@ -497,6 +499,7 @@ const FeatureSection = () => {
                 animate="center"
                 exit="exit"
                 transition={{ duration: 0.5, ease: "easeInOut" }}
+                loading="lazy"
               />
             </AnimatePresence>
             
@@ -521,7 +524,7 @@ const FeatureSection = () => {
           </div>
         </motion.div>
 
-        {/* Grid-Positioned Service Cards - Much Bigger & Spread Out */}
+        {/* Grid-Positioned Service Cards */}
         {Object.entries(cardData).map(([key, service]) => (
           <motion.div
             key={key}
@@ -538,10 +541,13 @@ const FeatureSection = () => {
           >
             {/* Preview Image */}
             <div className="relative w-full h-full">
-              <img
+              <Image
                 src={service.preview}
                 alt={service.title}
                 className="w-full h-full object-cover"
+                width={256}
+                height={176}
+                loading="lazy"
               />
               
               {/* Overlay with service info */}
