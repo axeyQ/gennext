@@ -301,13 +301,13 @@ const Navbar = () => {
         {/* Right Side Actions */}
         <div className="flex items-center space-x-4">
           <Link 
-            href="/signin" 
+            href="#" 
             className="text-gray-300 hover:text-white transition-colors text-sm font-medium"
           >
             Sign in
           </Link>
           <Link 
-            href="/get-started"
+            href="#"
             className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg transition-colors text-sm font-medium text-white"
           >
             Get Started
