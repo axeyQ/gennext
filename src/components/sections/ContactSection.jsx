@@ -117,9 +117,9 @@ const ContactSection = () => {
   };
 
   return (
-    <section className='max-w-[1864px] text-left px-5 py-16 md:py-20 mx-auto relative overflow-hidden'>
+    <section className='max-w-[1864px] text-left px-5 py-16 md:py-20 mx-auto relative overflow-hidden' id='contact'>
       
-      {/* Background Elements - Multiple Layers for Depth */}
+      {/* Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#07060B] via-[#0A090E] to-[#0D0B12]" />
       
       {/* Far Background Layer - Large Geometric Shapes */}
@@ -330,7 +330,7 @@ const ContactSection = () => {
       {/* Main Content */}
       <div className="relative z-10 max-w-6xl mx-auto">
         <motion.div
-          className="grid lg:grid-cols-2 gap-16 items-start"
+          className="grid lg:grid-cols-2 gap-16 items-center"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -548,29 +548,6 @@ const ContactSection = () => {
                 );
               })}
             </div>
-
-            {/* Response Promise */}
-            <motion.div
-              variants={itemVariants}
-              className="relative"
-            >
-              <div
-                className="relative rounded-2xl border border-green-500/30 p-6"
-                style={{
-                  background: `linear-gradient(135deg, rgba(34,197,94,0.1) 0%, rgba(34,197,94,0.05) 100%)`,
-                  backdropFilter: "blur(10px)",
-                }}
-              >
-                <div className="flex items-center gap-3 mb-3">
-                  <CheckCircle size={24} className="text-green-400" />
-                  <h4 className="text-lg font-semibold text-white">Quick Response Guarantee</h4>
-                </div>
-                <p className="text-gray-300 text-sm">
-                  We typically respond to all inquiries within 24 hours during business days. 
-                  For urgent enterprise requests, expect a response within 4 hours.
-                </p>
-              </div>
-            </motion.div>
           </motion.div>
         </motion.div>
       </div>

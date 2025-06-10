@@ -113,7 +113,7 @@ const FAQSection = () => {
   };
 
   return (
-    <section className="relative w-full bg-[linear-gradient(180deg,#07060B_50%,#0A090E_100%)] py-20 overflow-hidden">
+    <section className="relative w-full bg-[linear-gradient(180deg,#07060B_50%,#0A090E_100%)] py-20 overflow-hidden" id='faq'>
       {/* Background Elements */}
       <div className="absolute inset-0">
         {/* Glassmorphism background orbs */}

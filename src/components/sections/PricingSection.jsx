@@ -78,7 +78,7 @@ const PricingSection = () => {
   };
 
   return (
-    <section className='max-w-[1864px] text-left px-5 py-16 md:py-20 mx-auto relative overflow-hidden'>
+    <section id='pricing' className='max-w-[1864px] text-left px-5 py-16 md:py-20 mx-auto relative overflow-hidden'>
       
       {/* Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#07060B] via-[#0A090E] to-[#0D0B12]" />

@@ -5,7 +5,7 @@ import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 const AboutUsSection = () => {
   return (
-    <section className="relative w-full bg-[linear-gradient(180deg,#07060B_50%,#0A090E_100%)] py-20 overflow-hidden min-h-screen">
+    <section className="relative w-full bg-[linear-gradient(180deg,#07060B_50%,#0A090E_100%)] py-20 overflow-hidden min-h-screen" id='aboutus'>
 
       {/* Background Elements */}
       <div className="absolute inset-0">

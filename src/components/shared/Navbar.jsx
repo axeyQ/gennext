@@ -4,10 +4,14 @@ import { ChevronDown } from 'lucide-react';
 import Image from 'next/image';
 import Logo from "../../../public/logoAuto.png"
 import Link from 'next/link';
+import { useRouter, usePathname } from 'next/navigation';
+
 const Navbar = () => {
   const [hoveredItem, setHoveredItem] = useState(null);
   const [scrolled, setScrolled] = useState(false);
   const timeoutRef = useRef(null);
+  const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,192 +37,161 @@ const Navbar = () => {
     }, 150);
   };
 
+  // Smooth scroll to section function
+  const scrollToSection = (sectionId) => {
+    // If we're not on the home page, navigate to home first
+    if (pathname !== '/') {
+      router.push(`/#${sectionId}`);
+      return;
+    }
+
+    // If we're on home page, scroll to section
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const navbarHeight = 80; // Adjust based on your navbar height
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  // Handle section navigation
+  const handleSectionClick = (e, sectionId) => {
+    e.preventDefault();
+    scrollToSection(sectionId);
+  };
+
   const dropdownContent = {
-    Product: {
-      sections: [
-        {
-          title: "Platform",
-          items: [
-            {
-              name: "Features",
-              description: "Explore our deployment platform",
-              icon: "🚀",
-              href: "/features"
-            },
-            {
-              name: "Changelog",
-              description: "Discover the latest features and releases", 
-              icon: "📋",
-              href: "/changelog"
-            },
-            {
-              name: "Templates",
-              description: "Deploy popular applications in one click",
-              icon: "📦",
-              href: "/templates"
-            }
-          ]
-        },
-        {
-          title: "Solutions",
-          items: [
-            {
-              name: "Startups",
-              description: "Scale from idea to IPO",
-              icon: "🌱",
-              href: "/solutions/startups"
-            },
-            {
-              name: "Enterprise",
-              description: "Enterprise-grade infrastructure",
-              icon: "🏢",
-              href: "/solutions/enterprise"
-            }
-          ]
-        }
-      ]
-    },
-    Developers: {
-      sections: [
-        {
-          title: "Resources",
-          items: [
-            {
-              name: "Documentation",
-              description: "Learn how to use Railway",
-              icon: "📚",
-              href: "/docs"
-            },
-            {
-              name: "API Reference",
-              description: "Complete API documentation",
-              icon: "⚡",
-              href: "/api"
-            },
-            {
-              name: "CLI",
-              description: "Command line interface",
-              icon: "💻",
-              href: "/cli"
-            }
-          ]
-        },
-        {
-          title: "Community",
-          items: [
-            {
-              name: "Discord",
-              description: "Join our community",
-              icon: "💬",
-              href: "https://discord.gg/railway"
-            },
-            {
-              name: "GitHub",
-              description: "Open source projects",
-              icon: "🐙",
-              href: "https://github.com/railwayapp"
-            }
-          ]
-        }
-      ]
-    },
-    Resources: {
-      sections: [
-        {
-          title: "Learn",
-          items: [
-            {
-              name: "Blog",
-              description: "Latest news and insights",
-              icon: "📝",
-              href: "/blog"
-            },
-            {
-              name: "Guides",
-              description: "Step-by-step tutorials",
-              icon: "🎯",
-              href: "/guides"
-            },
-            {
-              name: "Help Center",
-              description: "Get support and answers",
-              icon: "❓",
-              href: "/help"
-            }
-          ]
-        },
-        {
-          title: "Tools",
-          items: [
-            {
-              name: "Status",
-              description: "Service status and uptime",
-              icon: "📊",
-              href: "/status"
-            },
-            {
-              name: "Feedback",
-              description: "Share your thoughts",
-              icon: "💡",
-              href: "/feedback"
-            }
-          ]
-        }
-      ]
-    },
     Company: {
       sections: [
         {
-          title: "About",
+          title: "",
           items: [
             {
               name: "About Us",
-              description: "Learn about our mission",
+              description: "Learn about our investors and what makes us us",
               icon: "🎯",
-              href: "/about"
+              sectionId: "aboutus",
+              isSection: true  // Added this
             },
             {
               name: "Careers",
-              description: "Join our team",
+              description: "Come build the future of software development",
               icon: "💼",
               href: "/careers"
             },
             {
-              name: "Press",
-              description: "Media resources and news",
-              icon: "📰",
-              href: "/press"
+              name: "Security",
+              description: "Enterprise-grade security, privacy and compliance",
+              icon: "🪪",
+              href: "/security"
             }
           ]
         },
         {
-          title: "Legal",
+          title: "",
           items: [
             {
-              name: "Privacy",
-              description: "Privacy policy",
-              icon: "🔒",
-              href: "/privacy"
+              name: "Blog",
+              description: "Latest stories and insights",
+              icon: "📝",
+              href: "/blog"
             },
             {
-              name: "Terms",
-              description: "Terms of service",
-              icon: "📄",
-              href: "/terms"
+              name: "Partnerships",
+              description: "Join our partner ecosystem",
+              icon: "🤝",
+              href: "/partnerships"
+            },
+            {
+              name: "Contact",
+              description: "For the best way to get in touch with us",
+              icon: "🤝",
+              sectionId: "contact",
+              isSection: true
             }
           ]
         }
       ]
-    }
+    },
+
+    Resources: {
+      sections: [
+        {
+          title: "",
+          items: [
+            {
+              name: "Docs",
+              description: "Documentation for AutoGen",
+              icon: "📝",
+              href: "/docs"
+            },
+            {
+              name: "Community",
+              description: "Connect with the AutoGen community",
+              icon: "🤝",
+              href: "/community"
+            },
+            {
+              name: "Feature Requests",
+              description: "Submit and vote on features you desire",
+              icon: "🙏",
+              href: "/feature-requests"
+            }
+          ]
+        },
+        {
+          title: "",
+          items: [
+            {
+              name: "Changelog",
+              description: "Latest updates and changes for AutoGen",
+              icon: "📊",
+              href: "/changelog"
+            },
+            {
+              name: "FAQ",
+              description: "Find answers to common questions",
+              icon: "❓",
+              sectionId: "faq",
+              isSection: true
+            },
+            {
+              name: "Events",
+              description: "Details on upcoming events and sessions",
+              icon: "🌃",
+              href: "/events"
+            }
+          ]
+        }
+      ]
+    },
   };
 
   const navItems = [
-    { name: 'Product', hasDropdown: true },
-    { name: 'Developers', hasDropdown: true },
     { name: 'Resources', hasDropdown: true },
     { name: 'Company', hasDropdown: true },
-    { name: 'Pricing', hasDropdown: false }
+    { name: 'Pricing', hasDropdown: false, sectionId: 'pricing' },
+    { name: 'Templates', hasDropdown: false, href: '/templates' },
+    { name: 'Components', hasDropdown: false, href: '#' }
   ];
+
+  // Handle URL hash on page load (for direct links like example.com/#pricing)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && pathname === '/') {
+      const hash = window.location.hash.replace('#', '');
+      if (hash) {
+        // Small delay to ensure page is loaded
+        setTimeout(() => {
+          scrollToSection(hash);
+        }, 100);
+      }
+    }
+  }, [pathname]);
 
   return (
     <nav className={`w-full px-6 md:px-44 py-4 fixed top-0 z-50 transition-all duration-300 ${
@@ -240,16 +213,33 @@ const Navbar = () => {
               onMouseEnter={() => item.hasDropdown && handleMouseEnter(item.name)}
               onMouseLeave={handleMouseLeave}
             >
-              <button className="flex items-center space-x-1 text-gray-300 hover:text-white transition-colors py-2">
-                <span className="text-sm font-medium">{item.name}</span>
-                {item.hasDropdown && (
+              {/* Render different elements based on item type */}
+              {item.hasDropdown ? (
+                <button className="flex items-center space-x-1 text-gray-300 hover:text-white transition-colors py-2">
+                  <span className="text-sm font-medium">{item.name}</span>
                   <ChevronDown 
                     className={`w-3 h-3 transition-transform duration-200 ${
                       hoveredItem === item.name ? 'rotate-180' : ''
                     }`} 
                   />
-                )}
-              </button>
+                </button>
+              ) : item.sectionId ? (
+                // Section scroll button
+                <button 
+                  onClick={(e) => handleSectionClick(e, item.sectionId)}
+                  className="flex items-center space-x-1 text-gray-300 hover:text-white transition-colors py-2"
+                >
+                  <span className="text-sm font-medium">{item.name}</span>
+                </button>
+              ) : (
+                // Regular page link
+                <Link 
+                  href={item.href}
+                  className="flex items-center space-x-1 text-gray-300 hover:text-white transition-colors py-2"
+                >
+                  <span className="text-sm font-medium">{item.name}</span>
+                </Link>
+              )}
 
               {/* Dropdown Menu */}
               {item.hasDropdown && hoveredItem === item.name && (
@@ -263,21 +253,43 @@ const Navbar = () => {
                           </h3>
                           <div className="space-y-1">
                             {section.items.map((dropdownItem, itemIndex) => (
-                              <a
-                                key={itemIndex}
-                                href={dropdownItem.href}
-                                className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors group"
-                              >
-                                <span className="text-lg flex-shrink-0 mt-0.5">{dropdownItem.icon}</span>
-                                <div>
-                                  <div className="text-white text-sm font-medium group-hover:text-purple-400 transition-colors">
-                                    {dropdownItem.name}
+                              dropdownItem.isSection ? (
+                                <button
+                                  key={itemIndex}
+                                  onClick={(e) => {
+                                    handleSectionClick(e, dropdownItem.sectionId);
+                                    setHoveredItem(null); // Close dropdown
+                                  }}
+                                  className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors group w-full text-left"
+                                >
+                                  <span className="text-lg flex-shrink-0 mt-0.5">{dropdownItem.icon}</span>
+                                  <div>
+                                    <div className="text-white text-sm font-medium group-hover:text-purple-400 transition-colors">
+                                      {dropdownItem.name}
+                                    </div>
+                                    <div className="text-gray-400 text-xs mt-0.5">
+                                      {dropdownItem.description}
+                                    </div>
                                   </div>
-                                  <div className="text-gray-400 text-xs mt-0.5">
-                                    {dropdownItem.description}
+                                </button>
+                              ) : (
+                                <Link
+                                  key={itemIndex}
+                                  href={dropdownItem.href}
+                                  className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors group"
+                                  onClick={() => setHoveredItem(null)} // Close dropdown
+                                >
+                                  <span className="text-lg flex-shrink-0 mt-0.5">{dropdownItem.icon}</span>
+                                  <div>
+                                    <div className="text-white text-sm font-medium group-hover:text-purple-400 transition-colors">
+                                      {dropdownItem.name}
+                                    </div>
+                                    <div className="text-gray-400 text-xs mt-0.5">
+                                      {dropdownItem.description}
+                                    </div>
                                   </div>
-                                </div>
-                              </a>
+                                </Link>
+                              )
                             ))}
                           </div>
                         </div>
@@ -292,18 +304,19 @@ const Navbar = () => {
 
         {/* Right Side Actions */}
         <div className="flex items-center space-x-4">
-          <button className="text-gray-300 hover:text-white transition-colors text-sm font-medium">
+          <Link 
+            href="/signin" 
+            className="text-gray-300 hover:text-white transition-colors text-sm font-medium"
+          >
             Sign in
-          </button>
-          <button className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg transition-colors text-sm font-medium text-white">
-            Book a demo
-          </button>
+          </Link>
+          <Link 
+            href="/get-started"
+            className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg transition-colors text-sm font-medium text-white"
+          >
+            Get Started
+          </Link>
         </div>
-      </div>
-
-      {/* Mobile menu button - you can add mobile menu logic here */}
-      <div className="md:hidden">
-        {/* Add mobile hamburger menu here if needed */}
       </div>
     </nav>
   );

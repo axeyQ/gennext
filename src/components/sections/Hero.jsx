@@ -46,12 +46,7 @@ const CopilotUIComponent = () => {
           <span>Add Context...</span>
         </button>
 
-        {/* Center - Current File Indicator */}
-        <div className="flex items-center gap-2 px-3 py-1.5 bg-[#0e639c] rounded text-white text-sm">
-          <FileText size={14} />
-          <span className="font-medium">autogen-config.js</span>
-          <span className="text-xs text-blue-200">Current File</span>
-        </div>
+       
 
         {/* Right Side - Icons */}
         <div className="flex items-center gap-2">
@@ -127,15 +122,15 @@ export default function Hero() {
   // Scale animation - starts small and scales up as you scroll
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 1.1]);
    
-  // Optional: Add some opacity fade-in effect
+  // Opacity fade-in effect
   const opacity = useTransform(scrollYProgress, [0, 0.3], [0.6, 1]);
    
-  // Optional: Add Y movement for parallax effect - starts higher up
+  // Y movement for parallax effect - starts higher up
   const y = useTransform(scrollYProgress, [0, 1], [-100, -50]);
 
   return (
     <div ref={containerRef} className="min-h-screen bg-[linear-gradient(180deg,_#040406_50%,_#09080D_100%)] text-white relative flex flex-col justify-between items-center">
-      {/* Circuit Board Background - Only in Hero Section */}
+      {/* Circuit Board Background */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Static Circuit Pattern */}
         <div
@@ -279,12 +274,11 @@ export default function Hero() {
         }
       `}</style>
 
-      {/* Hero Section with Copilot UI */}
+      {/* Hero Section */}
       <section className="relative z-10 px-8 md:px-44 pt-32 pb-8 min-h-11/12 flex items-center justify-center w-full">
         <div className="text-center flex flex-col justify-start h-full items-center w-full">
           <h1 className="font-tight leading-[1.1875] sm:leading-[1.1875] md:leading-[1.1875] text-[32px] sm:text-5xl md:text-6xl max-w-[900px] font-semibold mb-5 tracking-tight text-center w-full">
-            <span className="hidden md:inline">Shipping great products is hard. Scaling infrastructure is easy.</span>
-            <span className="inline md:hidden">Shipping great products is hard. Scaling infrastructure is easy.</span>
+            <span className="hidden md:inline">AutoGen Free in Visual Studio 2022</span>
           </h1>
            
           {/* Copilot UI Component replacing TypewriterText */}
@@ -294,10 +288,10 @@ export default function Hero() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
             <button className="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105">
-              Deploy a new project
+              Download in Visual Studio
             </button>
             <button className="bg-gray-800 hover:bg-gray-700 px-6 py-3 rounded-lg font-medium border border-gray-700 transition-colors">
-              Book a demo
+              Get Started
             </button>
           </div>
         </div>

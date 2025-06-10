@@ -2,23 +2,11 @@
 import { useEffect } from 'react';
 import { useProgressiveLoading } from '@/components/hooks/useProgressiveLoading';
 import { TEMPLATE_LOADING_STAGES } from '@/utils/loadingStages';
-import Hero from "@/components/sections/Hero";
-import LogoScrollSection from "@/components/sections/LogoScrollSection";
-import TrainSectionTwo from "@/components/sections/TrainSectionTwo";
-import FeatureSection from "@/components/sections/FeatureSection";
-import PricingSection from "@/components/sections/PricingSection";
-import TestimonialSection from "@/components/sections/TestimonialSection";
-import ContactSection from "@/components/sections/ContactSection";
-import AboutUsSection from "@/components/sections/AboutUsSection";
-import AutoGenChatbot from "@/components/ui/AutoGenChatBot";
-import ThreeSteps from "@/components/sections/ThreeSteps";
-import TipOne from "@/components/sections/TipOne";
-import TipTwo from "@/components/sections/TipTwo";
-import TipThree from "@/components/sections/TipThree";
-import TipFour from "@/components/sections/TipFour";
-import TipFive from "@/components/sections/TipFive";
-import FAQSection from "@/components/sections/FAQSection";
-export default function Home() {
+import TemplateLibraryHero from '@/components/pages/templates/TemplateLibraryHero';
+import PremiumTemplateShowcase from '@/components/pages/templates/PremiumTemplateShowcase';
+import HeroSectionGallery from '@/components/pages/templates/HeroSectionGallery';
+
+export default function TemplatesPage() {
   const {
     setProgress,
     runStages,
@@ -28,7 +16,9 @@ export default function Home() {
   } = useProgressiveLoading(TEMPLATE_LOADING_STAGES);
 
   useEffect(() => {
+    // Initialize progressive loading for templates page
     const initializeTemplatesPage = async () => {
+      // Stage 1: Fetch template data
       setProgress(10, 'Fetching template data...');
       await simulateDataFetch('templates');
       markDataLoaded('templates');
@@ -64,26 +54,17 @@ export default function Home() {
       }, Math.random() * 1000 + 500); // Random delay between 500-1500ms
     });
   };
+
   return (
-    <div className="bg-[linear-gradient(180deg,_#040406_50%,_#09080D_100%)]">
-        <Hero/>
-        <LogoScrollSection/>
-        <ThreeSteps/>
-        <TipOne/>
-        <TipTwo/>
-        <TipThree/>
-        <TipFour/>
-        <TipFive/>
-        <TrainSectionTwo/>
-        <div className="px-8">
-         <FeatureSection/>
-        </div>
-        <PricingSection/>
-        <TestimonialSection/>
-        <ContactSection/>
-        <AboutUsSection/>
-        <FAQSection/>
-        <AutoGenChatbot/>
+    <div className="min-h-screen bg-[linear-gradient(180deg,#040406_50%,#09080D_100%)]">
+      {/* Templates Hero Section */}
+      <TemplateLibraryHero />
+      
+      {/* Premium Template Showcase */}
+      <PremiumTemplateShowcase />
+      
+      {/* Hero Section Gallery */}
+      <HeroSectionGallery />
     </div>
   );
 }

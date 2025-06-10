@@ -1,36 +1,211 @@
 'use client';
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
+
+// Custom hook for intersection observer
+const useIntersectionObserver = (options = {}) => {
+  const [isIntersecting, setIsIntersecting] = useState(false);
+  const [hasIntersected, setHasIntersected] = useState(false);
+  const elementRef = useRef(null);
+
+  useEffect(() => {
+    const element = elementRef.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsIntersecting(entry.isIntersecting);
+        if (entry.isIntersecting && !hasIntersected) {
+          setHasIntersected(true);
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '50px',
+        ...options,
+      }
+    );
+
+    observer.observe(element);
+
+    return () => {
+      observer.unobserve(element);
+    };
+  }, [hasIntersected, options]);
+
+  return { elementRef, isIntersecting, hasIntersected };
+};
+
+// Lazy loaded template card component
+const LazyTemplateCard = ({ template, index }) => {
+  const { elementRef, hasIntersected } = useIntersectionObserver({
+    threshold: 0.1,
+    rootMargin: '100px', // Start loading 100px before the element is visible
+  });
+  
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6 }
+    }
+  };
+
+  return (
+    <motion.div
+      ref={elementRef}
+      className="relative group cursor-pointer"
+      variants={itemVariants}
+      whileHover={{ scale: 1.02 }}
+      transition={{ duration: 0.3 }}
+    >
+      {/* Template Card */}
+      <div
+        className="relative rounded-3xl border border-white/20 overflow-hidden shadow-2xl transition-all duration-300 group-hover:shadow-purple-500/20 group-hover:border-purple-500/30 h-[380px] flex flex-col"
+        style={{
+          background: `linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)`,
+          backdropFilter: 'blur(20px)',
+        }}
+      >
+        {/* Premium Badge */}
+        {template.premium && (
+          <div className="absolute top-4 right-4 z-20">
+            <div className="px-3 py-1 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-bold rounded-full">
+              Premium
+            </div>
+          </div>
+        )}
+
+        {/* Template Preview Image Container */}
+        <div className="relative h-40 overflow-hidden flex-shrink-0">
+          
+          {/* Loading Placeholder */}
+          {!hasIntersected && (
+            <div className="w-full h-full bg-gradient-to-br from-gray-800/50 to-gray-900/50 flex items-center justify-center">
+              <div className="w-8 h-8 border-2 border-purple-500/30 border-t-purple-500 rounded-full animate-spin"></div>
+            </div>
+          )}
+
+          {/* Image Error Placeholder */}
+          {imageError && hasIntersected && (
+            <div className="w-full h-full bg-gradient-to-br from-gray-800/50 to-gray-900/50 flex items-center justify-center">
+              <div className="text-gray-400 text-center">
+                <div className="w-8 h-8 mx-auto mb-1 bg-gray-600 rounded-lg flex items-center justify-center">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <p className="text-xs">Failed to load</p>
+              </div>
+            </div>
+          )}
+
+          {/* Actual Image */}
+          {hasIntersected && !imageError && (
+            <>
+              {/* Loading overlay */}
+              {!imageLoaded && (
+                <div className="absolute inset-0 bg-gradient-to-br from-gray-800/50 to-gray-900/50 flex items-center justify-center z-10">
+                  <div className="w-6 h-6 border-2 border-purple-500/30 border-t-purple-500 rounded-full animate-spin"></div>
+                </div>
+              )}
+              
+              <Image
+                src={template.image}
+                alt={template.title}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                className={`object-cover transition-all duration-300 group-hover:scale-105 ${
+                  imageLoaded ? 'opacity-100' : 'opacity-0'
+                }`}
+                onLoad={handleImageLoad}
+                onError={handleImageError}
+                priority={index < 2} // Prioritize first 2 images
+                quality={85}
+                placeholder="blur"
+                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+              />
+              
+              {/* Gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+            </>
+          )}
+        </div>
+
+        {/* Content */}
+        <div className="p-5 space-y-3 flex-1 flex flex-col">
+          <h3 className="text-sm font-bold text-white leading-tight line-clamp-2">
+            {template.title}
+          </h3>
+          <p className="text-gray-400 text-xs leading-relaxed flex-1 line-clamp-4">
+            {template.description}
+          </p>
+          
+          {/* Action Button */}
+          <button className="text-purple-400 hover:text-purple-300 font-medium text-xs transition-colors self-start">
+            View Template →
+          </button>
+        </div>
+
+        {/* Glassmorphism Shine Effect */}
+        <div
+          className="absolute inset-0 rounded-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          style={{
+            background: `linear-gradient(135deg,
+              rgba(255,255,255,0.1) 0%,
+              rgba(255,255,255,0.05) 25%,
+              transparent 50%,
+              rgba(255,255,255,0.05) 75%,
+              rgba(255,255,255,0.1) 100%)`
+          }}
+        />
+      </div>
+    </motion.div>
+  );
+};
 
 const PremiumTemplateShowcase = () => {
-  // Template cards data
+  // Template cards data with optimized image URLs
   const templateCards = [
     {
       id: 1,
       title: "Infrastructure templates for modern developers.",
       description: "Easy-to-customize deployment templates that drive performance and scale with you as your applications grow.",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop&auto=format&q=75",
       premium: true
     },
     {
       id: 2,
       title: "AutoGen & DevOps Templates for Agencies, Startups & Creators",
       description: "Professional infrastructure solutions designed for rapid deployment and scaling.",
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
+      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop&auto=format&q=75",
       premium: true
     },
     {
       id: 3,
       title: "You need a powerful infrastructure template.",
       description: "Deploy enterprise-grade applications with our pre-configured templates and best practices.",
-      image: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&h=400&fit=crop",
+      image: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&h=400&fit=crop&auto=format&q=75",
       premium: true
     },
     {
       id: 4,
       title: "Ultimate DevOps Kit and Deployment System for AutoGen",
       description: "Revolutionary infrastructure templates with AI-powered optimization and scaling capabilities.",
-      image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&h=400&fit=crop",
+      image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&h=400&fit=crop&auto=format&q=75",
       premium: true
     }
   ];
@@ -80,15 +255,6 @@ const PremiumTemplateShowcase = () => {
     }
   };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6 }
-    }
-  };
-
   return (
     <section className="relative w-full bg-[linear-gradient(180deg,#07060B_50%,#0A090E_100%)] py-20 overflow-hidden">
       {/* Background Elements */}
@@ -133,69 +299,11 @@ const PremiumTemplateShowcase = () => {
           viewport={{ once: false }}
         >
           {templateCards.map((template, index) => (
-            <motion.div
+            <LazyTemplateCard
               key={template.id}
-              className="relative group cursor-pointer"
-              variants={itemVariants}
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.3 }}
-            >
-              {/* Template Card */}
-              <div
-                className="relative rounded-3xl border border-white/20 overflow-hidden shadow-2xl transition-all duration-300 group-hover:shadow-purple-500/20 group-hover:border-purple-500/30 h-[380px] flex flex-col"
-                style={{
-                  background: `linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)`,
-                  backdropFilter: 'blur(20px)',
-                }}
-              >
-                {/* Premium Badge */}
-                {template.premium && (
-                  <div className="absolute top-4 right-4 z-10">
-                    <div className="px-3 py-1 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-bold rounded-full">
-                      Premium
-                    </div>
-                  </div>
-                )}
-
-                {/* Template Preview Image */}
-                <div className="relative h-40 overflow-hidden flex-shrink-0">
-                  <img
-                    src={template.image}
-                    alt={template.title}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                </div>
-
-                {/* Content */}
-                <div className="p-5 space-y-3 flex-1 flex flex-col">
-                  <h3 className="text-sm font-bold text-white leading-tight line-clamp-2">
-                    {template.title}
-                  </h3>
-                  <p className="text-gray-400 text-xs leading-relaxed flex-1 line-clamp-4">
-                    {template.description}
-                  </p>
-                  
-                  {/* Action Button */}
-                  <button className="text-purple-400 hover:text-purple-300 font-medium text-xs transition-colors self-start">
-                    View Template →
-                  </button>
-                </div>
-
-                {/* Glassmorphism Shine Effect */}
-                <div
-                  className="absolute inset-0 rounded-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  style={{
-                    background: `linear-gradient(135deg,
-                      rgba(255,255,255,0.1) 0%,
-                      rgba(255,255,255,0.05) 25%,
-                      transparent 50%,
-                      rgba(255,255,255,0.05) 75%,
-                      rgba(255,255,255,0.1) 100%)`
-                  }}
-                />
-              </div>
-            </motion.div>
+              template={template}
+              index={index}
+            />
           ))}
         </motion.div>
 
