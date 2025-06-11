@@ -110,28 +110,13 @@ const AboutUsSection = () => {
                 >
                   {/* Infrastructure illustration */}
                   <div className="flex flex-col items-center space-y-4">
-                    {/* Server/Cloud icon */}
-                    <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-cyan-600 rounded-xl flex items-center justify-center">
+                   
                     <DotLottieReact
-      src="../../../public/ai.lottie"
+      src="/ai.lottie"
       loop
       autoplay
     />
-                    </div>
-                    
-                    {/* Connection lines */}
-                    <div className="flex space-x-2">
-                      <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
-                      <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse" style={{animationDelay: '0.5s'}}></div>
-                      <div className="w-2 h-2 bg-pink-400 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
-                    </div>
-                    
-                    {/* Network nodes */}
-                    <div className="grid grid-cols-3 gap-3">
-                      <div className="w-8 h-8 bg-gradient-to-r from-cyan-500/20 to-cyan-500/40 rounded-lg border border-cyan-500/30"></div>
-                      <div className="w-8 h-8 bg-gradient-to-r from-purple-500/20 to-purple-500/40 rounded-lg border border-purple-500/30"></div>
-                      <div className="w-8 h-8 bg-gradient-to-r from-pink-500/20 to-pink-500/40 rounded-lg border border-pink-500/30"></div>
-                    </div>
+                  
                   </div>
                   
                   {/* Glassmorphism shine effect */}

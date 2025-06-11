@@ -97,7 +97,7 @@ const Navbar = () => {
               name: "Blog",
               description: "Latest stories and insights",
               icon: "📝",
-              href: "/blog"
+              href: "/blogs"
             },
             {
               name: "Partnerships",

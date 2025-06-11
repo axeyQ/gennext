@@ -9,7 +9,6 @@ const CopilotUIComponent = () => {
   const [currentText, setCurrentText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
   
-  
   const typewriterTexts = [
     "How can I optimize this React component?",
     "Explain this JavaScript function...",
