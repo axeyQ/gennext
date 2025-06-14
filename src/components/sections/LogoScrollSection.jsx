@@ -139,12 +139,12 @@ export default function LogoScrollSection() {
     }
   ];
 
-  // Logo component with optimized fallback
+  // Logo component with responsive design
   const LogoItem = ({ company, index }) => (
-    <div key={index} className="flex-shrink-0 px-12">
-      <div className="flex items-center gap-3">
-        {/* Optimized Logo Image */}
-        <div className="relative w-8 h-8 rounded-lg overflow-hidden">
+    <div key={index} className="flex-shrink-0 px-3 sm:px-4 md:px-6 lg:px-8 xl:px-12">
+      <div className="flex items-center gap-2 sm:gap-2.5 md:gap-3">
+        {/* Responsive Logo Image */}
+        <div className="relative w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-md md:rounded-lg overflow-hidden">
           <LogoImage
             src={company.logo}
             alt={`${company.name} logo`}
@@ -152,16 +152,16 @@ export default function LogoScrollSection() {
             height={32}
             className="w-full h-full object-cover"
             fallback={() => (
-              <div className={`w-full h-full ${company.color} rounded-lg flex items-center justify-center text-white text-xs font-bold`}>
+              <div className={`w-full h-full ${company.color} rounded-md md:rounded-lg flex items-center justify-center text-white text-xs font-bold`}>
                 {company.name.charAt(0)}
               </div>
             )}
             quality={90}
-            sizes="32px"
+            sizes="(max-width: 640px) 24px, (max-width: 768px) 28px, 32px"
           />
         </div>
-        {/* Company Name */}
-        <span className="text-gray-500 text-2xl font-medium whitespace-nowrap opacity-60">
+        {/* Responsive Company Name */}
+        <span className="text-gray-500 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-medium whitespace-nowrap opacity-60">
           {company.name}
         </span>
       </div>
@@ -169,10 +169,10 @@ export default function LogoScrollSection() {
   );
 
   return (
-    <section className="bg-black py-20 overflow-hidden">
+    <section className="bg-black py-8 sm:py-12 md:py-16 lg:py-20 overflow-hidden">
       <div className="relative">
         {/* Top Row */}
-        <div className="mb-8">
+        <div className="mb-4 sm:mb-6 md:mb-8">
           <div className="flex animate-scroll-left">
             {/* Triple the logos for seamless loop */}
             {[...topRowLogos, ...topRowLogos, ...topRowLogos].map((company, index) => (
@@ -192,7 +192,7 @@ export default function LogoScrollSection() {
         </div>
       </div>
 
-      {/* CSS Animations */}
+      {/* CSS Animations with responsive speeds */}
       <style jsx>{`
         @keyframes scroll-left {
           0% {
@@ -213,11 +213,46 @@ export default function LogoScrollSection() {
         }
 
         .animate-scroll-left {
-          animation: scroll-left 40s linear infinite;
+          animation: scroll-left 60s linear infinite;
         }
 
         .animate-scroll-right {
-          animation: scroll-right 30s linear infinite;
+          animation: scroll-right 45s linear infinite;
+        }
+
+        /* Responsive animation speeds */
+        @media (max-width: 640px) {
+          .animate-scroll-left {
+            animation: scroll-left 40s linear infinite;
+          }
+          .animate-scroll-right {
+            animation: scroll-right 30s linear infinite;
+          }
+        }
+
+        @media (min-width: 641px) and (max-width: 1024px) {
+          .animate-scroll-left {
+            animation: scroll-left 50s linear infinite;
+          }
+          .animate-scroll-right {
+            animation: scroll-right 37s linear infinite;
+          }
+        }
+
+        /* Pause animation on hover for better UX */
+        @media (hover: hover) {
+          .animate-scroll-left:hover,
+          .animate-scroll-right:hover {
+            animation-play-state: paused;
+          }
+        }
+
+        /* Reduce motion for users who prefer it */
+        @media (prefers-reduced-motion: reduce) {
+          .animate-scroll-left,
+          .animate-scroll-right {
+            animation-duration: 120s;
+          }
         }
       `}</style>
     </section>
