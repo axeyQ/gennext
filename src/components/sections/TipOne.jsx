@@ -17,24 +17,24 @@ export default function TipOne() {
 
   return (
     <section ref={containerRef} className="relative min-h-screen bg-black overflow-hidden">
-      {/* Track and Train Container - Only visible on larger screens */}
-      <div className="hidden md:block absolute left-0 top-0 w-48 lg:w-64 xl:w-96 h-full z-10">
+      {/* Track and Train Container - Visible on all screens */}
+      <div className="absolute left-0 top-0 w-16 sm:w-20 md:w-48 lg:w-64 xl:w-96 h-full z-10">
         
         {/* Background Track SVG */}
         <div className="relative w-full h-full flex justify-center">
-          {/* Fallback track if SVG doesn't load */}
+          {/* Fallback track - always visible */}
           <div className="absolute inset-0 w-full h-full flex items-center justify-center">
-            <div className="h-full w-1 lg:w-1.5 bg-gradient-to-b from-[#08070C] via-[rgba(202,36,77,0.8)] to-[#08070C]"></div>
+            <div className="h-full w-0.5 sm:w-1 lg:w-1.5 bg-gradient-to-b from-[#08070C] via-[rgba(202,36,77,0.8)] to-[#08070C]"></div>
           </div>
           
-          {/* Track SVG - with fallback */}
+          {/* Track SVG - with fallback (hidden on mobile) */}
           <Image
             width={250}
             height={400}
             src="/track1.svg" 
             alt="Railway tracks" 
             loading="lazy" 
-            className="absolute opacity-50"
+            className="hidden md:block absolute opacity-50"
             onError={(e) => {
               e.target.style.display = 'none';
             }}
@@ -46,7 +46,7 @@ export default function TipOne() {
           className="absolute left-1/2 top-0 z-30 transform -translate-x-1/2"
           style={{ y: trainY }}
         >
-          {/* Train SVG with fallback */}
+          {/* Train SVG with responsive sizing */}
           <div className="relative">
             <Image
               width={120}
@@ -54,15 +54,15 @@ export default function TipOne() {
               loading="lazy" 
               src="/train1.svg" 
               alt="Railway train"
-              className="w-[80px] h-[140px] lg:w-[120px] lg:h-[200px] xl:w-[140px] xl:h-[220px] relative z-30"
-              style={{marginLeft:"-40px"}}
+              className="w-[40px] h-[70px] sm:w-[50px] sm:h-[90px] md:w-[80px] md:h-[140px] lg:w-[120px] lg:h-[200px] xl:w-[140px] xl:h-[220px] relative z-30"
+              style={{marginLeft:"-20px"}}
               onError={(e) => {
                 // Fallback train representation
                 e.target.style.display = 'none';
                 const fallback = document.createElement('div');
-                fallback.className = 'w-8 h-16 bg-gradient-to-b from-purple-500 to-pink-500 rounded-lg flex items-center justify-center text-white text-xs font-bold';
+                fallback.className = 'w-6 h-12 sm:w-8 sm:h-16 bg-gradient-to-b from-purple-500 to-pink-500 rounded-lg flex items-center justify-center text-white text-xs font-bold';
                 fallback.innerHTML = '🚂';
-                fallback.style.marginLeft = '-16px';
+                fallback.style.marginLeft = '-12px';
                 e.target.parentNode.appendChild(fallback);
               }}
             />
