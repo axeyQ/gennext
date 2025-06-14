@@ -35,23 +35,23 @@ const CopilotUIComponent = () => {
   }, [currentText, currentIndex, typewriterTexts]);
 
   return (
-    <div className="w-full max-w-4xl mx-auto bg-[#1e1e1e] rounded-lg border border-gray-700 overflow-hidden shadow-2xl">
+    <div className="w-full max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto bg-[#1e1e1e] rounded-lg md:rounded-xl border border-gray-700 overflow-hidden shadow-2xl">
       {/* Header Bar */}
-      <div className="flex items-center justify-between px-4 py-3 bg-[#2d2d30] border-b border-gray-700">
+      <div className="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-[#2d2d30] border-b border-gray-700">
         {/* Left Side - Add Context Button */}
-        <button className="flex items-center gap-2 px-3 py-1.5 bg-[#3c3c3c] hover:bg-[#464647] rounded text-gray-300 text-sm transition-colors">
-          <Paperclip size={14} />
-          <span>Add Context...</span>
+        <button className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 bg-[#3c3c3c] hover:bg-[#464647] rounded text-gray-300 text-xs sm:text-sm transition-colors">
+          <Paperclip size={12} className="sm:w-3.5 sm:h-3.5" />
+          <span className="hidden sm:inline">Add Context...</span>
+          <span className="sm:hidden">Context</span>
         </button>
         
-        
         {/* Right Side - Icons */}
-        <div className="flex items-center gap-2">
-          <button className="p-1.5 hover:bg-[#3c3c3c] rounded text-gray-400 hover:text-gray-300 transition-colors">
-            <Globe size={16} />
+        <div className="flex items-center gap-1 sm:gap-2">
+          <button className="p-1 sm:p-1.5 hover:bg-[#3c3c3c] rounded text-gray-400 hover:text-gray-300 transition-colors">
+            <Globe size={14} className="sm:w-4 sm:h-4" />
           </button>
-          <button className="p-1.5 hover:bg-[#3c3c3c] rounded text-gray-400 hover:text-gray-300 transition-colors">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+          <button className="p-1 sm:p-1.5 hover:bg-[#3c3c3c] rounded text-gray-400 hover:text-gray-300 transition-colors">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" className="sm:w-4 sm:h-4">
               <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
             </svg>
           </button>
@@ -59,49 +59,55 @@ const CopilotUIComponent = () => {
       </div>
 
       {/* Input Area */}
-      <div className="bg-[#252526] p-4">
-        <div className="flex items-center gap-3">
+      <div className="bg-[#252526] p-3 sm:p-4">
+        <div className="flex items-center gap-2 sm:gap-3">
           {/* @ Symbol */}
-          <button className="text-gray-400 hover:text-gray-300 transition-colors">
-            <span className="text-lg font-medium">@</span>
+          <button className="text-gray-400 hover:text-gray-300 transition-colors flex-shrink-0">
+            <span className="text-base sm:text-lg font-medium">@</span>
           </button>
           
           {/* Microphone Icon */}
-          <button className="text-gray-400 hover:text-gray-300 transition-colors">
-            <Mic size={18} />
+          <button className="text-gray-400 hover:text-gray-300 transition-colors flex-shrink-0">
+            <Mic size={16} className="sm:w-[18px] sm:h-[18px]" />
           </button>
           
           {/* Input Field with Typewriter Effect */}
-          <div className="flex-1 relative">
-            <div className="bg-[#3c3c3c] rounded-lg px-4 py-3 min-h-[44px] flex items-center">
-              <span className="text-gray-300">
-                {currentText}
+          <div className="flex-1 relative min-w-0">
+            <div className="bg-[#3c3c3c] rounded-lg px-3 sm:px-4 py-2 sm:py-3 min-h-[36px] sm:min-h-[44px] flex items-center">
+              <span className="text-gray-300 text-sm sm:text-base truncate">
+                <span className="inline sm:hidden">
+                  {currentText.length > 25 ? `${currentText.slice(0, 25)}...` : currentText}
+                </span>
+                <span className="hidden sm:inline">
+                  {currentText}
+                </span>
                 <span className="animate-pulse text-blue-400">|</span>
               </span>
             </div>
           </div>
           
-          {/* Model Selector */}
-          <div className="flex items-center gap-2 px-3 py-2 bg-[#3c3c3c] rounded-lg text-gray-300 text-sm">
-            <span>Ask</span>
-            <div className="w-px h-4 bg-gray-600"></div>
+          {/* Model Selector - Hidden on very small screens */}
+          <div className="hidden sm:flex items-center gap-2 px-2 md:px-3 py-2 bg-[#3c3c3c] rounded-lg text-gray-300 text-xs md:text-sm flex-shrink-0">
+            <span className="hidden md:inline">Ask</span>
+            <div className="w-px h-3 md:h-4 bg-gray-600 hidden md:block"></div>
             <span className="font-medium">AutoGen AI</span>
-            <ChevronDown size={14} />
+            <ChevronDown size={12} className="md:w-3.5 md:h-3.5" />
           </div>
           
           {/* Send Button */}
           <motion.button
-            className="p-2.5 bg-[#0e639c] hover:bg-[#1177bb] rounded-lg text-white transition-colors"
+            className="p-2 sm:p-2.5 bg-[#0e639c] hover:bg-[#1177bb] rounded-lg text-white transition-colors flex-shrink-0"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <Send size={16} />
+            <Send size={14} className="sm:w-4 sm:h-4" />
           </motion.button>
         </div>
         
         {/* Footer Text */}
-        <div className="text-xs text-gray-500 mt-3 text-center">
-          AutoGen AI can help with deployment, scaling, and infrastructure optimization.
+        <div className="text-xs text-gray-500 mt-2 sm:mt-3 text-center">
+          <span className="hidden sm:inline">AutoGen AI can help with deployment, scaling, and infrastructure optimization.</span>
+          <span className="sm:hidden">AutoGen AI helps with deployment & optimization.</span>
         </div>
       </div>
     </div>
@@ -214,24 +220,25 @@ export default function Hero() {
       `}</style>
 
       <motion.section
-        className="relative z-10 px-8 md:px-44 pt-32 pb-8 min-h-11/12 flex items-center justify-center w-full"
+        className="relative z-10 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-44 pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-6 sm:pb-8 min-h-[85vh] sm:min-h-[90vh] flex items-center justify-center w-full"
         initial={{ opacity: 0 }}
         animate={{ opacity: isLoaded ? 1 : 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <div className="text-center flex flex-col justify-start h-full items-center w-full">
+        <div className="text-center flex flex-col justify-start h-full items-center w-full max-w-6xl">
           <motion.h1
-            className="font-tight leading-[1.1875] sm:leading-[1.1875] md:leading-[1.1875] text-[32px] sm:text-5xl md:text-6xl max-w-[900px] font-semibold mb-5 tracking-tight text-center w-full"
+            className="font-tight leading-[1.1] sm:leading-[1.15] md:leading-[1.1875] text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl max-w-[280px] sm:max-w-[400px] md:max-w-[600px] lg:max-w-[800px] xl:max-w-[900px] font-semibold mb-4 sm:mb-5 md:mb-6 tracking-tight text-center w-full"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 30 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
           >
-            AutoGen Labs Free in Visual Studio 2025
+            <span className="block sm:inline">AutoGen Labs Free in</span>
+            <span className="block sm:inline sm:ml-2">Visual Studio 2025</span>
           </motion.h1>
 
           {/* Copilot UI Component - Load immediately */}
           <motion.div
-            className="mb-8 flex items-start justify-center w-full"
+            className="mb-6 sm:mb-8 md:mb-10 flex items-start justify-center w-full"
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             animate={{
               opacity: isLoaded ? 1 : 0,
@@ -245,24 +252,25 @@ export default function Hero() {
 
           {/* Animated Buttons */}
           <motion.div
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full"
+            className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full max-w-md sm:max-w-none"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 30 }}
             transition={{ duration: 0.8, delay: 1, ease: "easeOut" }}
           >
             <motion.button
-              className="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105"
+              className="w-full sm:w-auto bg-purple-600 hover:bg-purple-700 px-6 md:px-8 py-3 md:py-4 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 text-sm md:text-base min-h-[48px] flex items-center justify-center"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: isLoaded ? 1 : 0, x: isLoaded ? 0 : -20 }}
               transition={{ duration: 0.6, delay: 1.2 }}
             >
-              Download in Visual Studio
+              <span className="hidden sm:inline">Download in Visual Studio</span>
+              <span className="sm:hidden">Download VS</span>
             </motion.button>
             
             <motion.button
-              className="bg-gray-800 hover:bg-gray-700 px-6 py-3 rounded-lg font-medium border border-gray-700 transition-colors"
+              className="w-full sm:w-auto bg-gray-800 hover:bg-gray-700 px-6 md:px-8 py-3 md:py-4 rounded-lg font-medium border border-gray-700 transition-colors text-sm md:text-base min-h-[48px] flex items-center justify-center"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               initial={{ opacity: 0, x: 20 }}
@@ -277,7 +285,7 @@ export default function Hero() {
 
       {/* Lazy-loaded Video Section */}
       <motion.div
-        className="flex justify-center items-center w-10/12 mt-10 p-10 border-2 border-amber-50 rounded-3xl relative z-10"
+        className="flex justify-center items-center w-[95%] sm:w-[90%] md:w-10/12 lg:w-9/12 xl:w-10/12 mt-4 sm:mt-6 md:mt-8 lg:mt-10 p-4 sm:p-6 md:p-8 lg:p-10 border-2 border-amber-50 rounded-2xl md:rounded-3xl relative z-10"
         style={{ scale, opacity, y }}
         initial={{ opacity: 0, y: 100, scale: 0.8 }}
         animate={{
