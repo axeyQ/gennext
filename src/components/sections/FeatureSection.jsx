@@ -7,7 +7,6 @@ const FeatureSection = () => {
   const [hoveredCard, setHoveredCard] = useState('frontend');
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [screenSize, setScreenSize] = useState('lg');
-  const [isClient, setIsClient] = useState(false); // Add client-side flag
   const containerRef = useRef(null);
   
   const { scrollYProgress } = useScroll({
@@ -18,18 +17,10 @@ const FeatureSection = () => {
   // Train movement
   const trainY = useTransform(scrollYProgress, [0, 1], [100, 400]);
 
-  // Client-side hydration and responsive breakpoint detection
+  // Responsive breakpoint detection
   useEffect(() => {
-    // Ensure we're on the client side
-    setIsClient(true);
-    
     const checkScreenSize = () => {
-      // Add safety check for window
-      if (typeof window === 'undefined') return;
-      
       const width = window.innerWidth;
-      console.log('Detected screen width:', width); // Debug log
-      
       if (width < 640) setScreenSize('sm');
       else if (width < 768) setScreenSize('md');
       else if (width < 1030) setScreenSize('lg');
@@ -41,15 +32,6 @@ const FeatureSection = () => {
     window.addEventListener('resize', checkScreenSize);
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
-
-  // Debug log to track state changes
-  useEffect(() => {
-    console.log('Component state:', { 
-      isClient, 
-      screenSize, 
-      windowWidth: typeof window !== 'undefined' ? window.innerWidth : 'undefined' 
-    });
-  }, [isClient, screenSize]);
 
   // Responsive positions for each service card
   const responsivePositions = {
@@ -73,6 +55,7 @@ const FeatureSection = () => {
       lg: { left: 83, top: 35, width: 256, height: 176 },
       xl: { left: 82, top: 28, width: 220, height: 140 },
       xxl: { left: 82, top: 75, width: 400, height: 270 }
+
     },
     postgres: {
       sm: { left: 15, top: 85, width: 180, height: 110 },
@@ -80,6 +63,7 @@ const FeatureSection = () => {
       lg: { left: 10, top: 75, width: 256, height: 176 },
       xl: { left: 12, top: 65, width: 220, height: 140 },
       xxl: { left: 12, top: 140, width: 400, height: 270 }
+
     },
     redis: {
       sm: { left: 75, top: 85, width: 180, height: 110 },
@@ -87,6 +71,7 @@ const FeatureSection = () => {
       lg: { left: 70, top: 75, width: 256, height: 176 },
       xl: { left: 72, top: 65, width: 220, height: 140 },
       xxl: { left: 70, top: 140, width: 400, height: 270 }
+
     },
     monitoring: {
       sm: { left: 15, top: 45, width: 180, height: 110 },
@@ -94,6 +79,7 @@ const FeatureSection = () => {
       lg: { left: 4, top: 28, width: 256, height: 176 },
       xl: { left: 5, top: 26, width: 220, height: 140 },
       xxl: { left: 6, top: 70, width: 400, height: 270 }
+
     }
   };
 
@@ -255,43 +241,6 @@ const FeatureSection = () => {
   const getResponsiveViewBox = () => {
     return "0 0 1400 600"; // Keep original viewBox
   };
-
-  // Show loading skeleton until client-side hydration is complete
-  if (!isClient) {
-    return (
-      <section className='w-full text-left px-2 md:px-8 py-5 md:py-0 mx-auto md:rounded-2xl border-y md:border-x border-white/10 bg-[linear-gradient(180deg,#07060B_50%,#0A090E_100%)] relative h-[100vh] overflow-hidden'>
-        {/* Basic structure without responsive positioning */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="w-full h-full" style={{
-            backgroundImage: `
-              linear-gradient(rgba(100,100,100,0.1) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(100,100,100,0.1) 1px, transparent 1px)
-            `,
-            backgroundSize: '40px 40px'
-          }} />
-        </div>
-        
-        <div className="relative z-10 text-center pt-8 pb-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
-            Application Infrastructure
-          </h2>
-          <p className="text-base text-gray-400 max-w-xl mx-auto">
-            Linear microservices network with grid-based routing
-          </p>
-        </div>
-        
-        {/* Simple loading state */}
-        <div className="relative z-10 h-[500px] w-full flex justify-center items-center">
-          <div className="w-96 h-72 bg-gray-900/90 backdrop-blur-sm border border-gray-700/70 rounded-3xl overflow-hidden shadow-2xl flex items-center justify-center">
-            <div className="text-center">
-              <div className="w-8 h-8 border-2 border-purple-500/30 border-t-purple-500 rounded-full animate-spin mx-auto mb-4"></div>
-              <p className="text-gray-400 text-sm">Loading interactive view...</p>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section ref={containerRef} className='w-full text-left px-2 md:px-8 py-5 md:py-0 mx-auto md:rounded-2xl border-y md:border-x border-white/10 bg-[linear-gradient(180deg,#07060B_50%,#0A090E_100%)] relative h-[100vh] overflow-hidden'>
