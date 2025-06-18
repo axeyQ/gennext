@@ -24,7 +24,7 @@ const FeatureSection = () => {
       if (width < 640) setScreenSize('sm');
       else if (width < 768) setScreenSize('md');
       else if (width < 1030) setScreenSize('lg');
-      else if (width < 1450) setScreenSize('xl');     
+      else if (width < 2000) setScreenSize('xl');     
       else setScreenSize('xxl');
     };
 
