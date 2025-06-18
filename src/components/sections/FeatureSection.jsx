@@ -7,6 +7,8 @@ const FeatureSection = () => {
   const [hoveredCard, setHoveredCard] = useState('frontend');
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [screenSize, setScreenSize] = useState('lg');
+  const [isClient, setIsClient] = useState(false);
+  const [debugInfo, setDebugInfo] = useState({}); // Debug information
   const containerRef = useRef(null);
   
   const { scrollYProgress } = useScroll({
@@ -17,21 +19,116 @@ const FeatureSection = () => {
   // Train movement
   const trainY = useTransform(scrollYProgress, [0, 1], [100, 400]);
 
-  // Responsive breakpoint detection
+  // More robust screen size detection with multiple methods
   useEffect(() => {
-    const checkScreenSize = () => {
-      const width = window.innerWidth;
-      if (width < 640) setScreenSize('sm');
-      else if (width < 768) setScreenSize('md');
-      else if (width < 1030) setScreenSize('lg');
-      else if (width < 1440) setScreenSize('xl');     
-      else setScreenSize('xxl');
+    setIsClient(true);
+    
+    const detectScreenSize = () => {
+      if (typeof window === 'undefined') return 'lg';
+      
+      // Method 1: window.innerWidth
+      const windowWidth = window.innerWidth;
+      
+      // Method 2: document.documentElement.clientWidth
+      const documentWidth = document.documentElement.clientWidth;
+      
+      // Method 3: screen.width
+      const screenWidth = window.screen.width;
+      
+      // Method 4: CSS media query matching
+      const mediaQueries = {
+        sm: window.matchMedia('(max-width: 639px)').matches,
+        md: window.matchMedia('(min-width: 640px) and (max-width: 767px)').matches,
+        lg: window.matchMedia('(min-width: 768px) and (max-width: 1029px)').matches,
+        xl: window.matchMedia('(min-width: 1030px) and (max-width: 1999px)').matches,
+        xxl: window.matchMedia('(min-width: 1440px)').matches
+      };
+      
+      // Get the active media query
+      const cssBreakpoint = Object.entries(mediaQueries).find(([key, matches]) => matches)?.[0] || 'lg';
+      
+      // Debug information
+      const debug = {
+        windowWidth,
+        documentWidth,
+        screenWidth,
+        devicePixelRatio: window.devicePixelRatio,
+        userAgent: navigator.userAgent,
+        cssBreakpoint,
+        mediaQueries,
+        timestamp: new Date().toISOString(),
+        location: window.location.href
+      };
+      
+      setDebugInfo(debug);
+      
+      // Log comprehensive debug info
+      console.log('🔍 Screen Detection Debug:', debug);
+      
+      // Use CSS media query result as primary method (more reliable)
+      let detectedSize = cssBreakpoint;
+      
+      // Fallback to window.innerWidth if CSS method fails
+      if (!detectedSize || detectedSize === 'lg') {
+        if (windowWidth < 640) detectedSize = 'sm';
+        else if (windowWidth < 768) detectedSize = 'md';
+        else if (windowWidth < 1030) detectedSize = 'lg';
+        else if (windowWidth < 1440) detectedSize = 'xl';
+        else detectedSize = 'xxl';
+      }
+      
+      console.log(`📱 Final detected size: ${detectedSize} (window: ${windowWidth}px, css: ${cssBreakpoint})`);
+      
+      return detectedSize;
     };
 
+    const checkScreenSize = () => {
+      const newSize = detectScreenSize();
+      if (newSize !== screenSize) {
+        console.log(`🔄 Screen size changed: ${screenSize} → ${newSize}`);
+        setScreenSize(newSize);
+      }
+    };
+
+    // Initial check with delay to ensure DOM is ready
+    const initialTimer = setTimeout(checkScreenSize, 100);
+    
+    // Also check immediately
     checkScreenSize();
+    
+    // Listen for resize events
     window.addEventListener('resize', checkScreenSize);
-    return () => window.removeEventListener('resize', checkScreenSize);
+    
+    // Additional check for orientation changes
+    window.addEventListener('orientationchange', () => {
+      setTimeout(checkScreenSize, 100);
+    });
+
+    return () => {
+      clearTimeout(initialTimer);
+      window.removeEventListener('resize', checkScreenSize);
+      window.removeEventListener('orientationchange', checkScreenSize);
+    };
   }, []);
+
+  // Force override for debugging (remove this in production)
+  useEffect(() => {
+    // Uncomment the line below to force a specific breakpoint for testing
+    // setScreenSize('lg');
+  }, []);
+
+  // Enhanced debug logging
+  useEffect(() => {
+    if (isClient) {
+      console.log('🚀 Component State:', { 
+        isClient, 
+        screenSize, 
+        environment: process.env.NODE_ENV,
+        isVercel: !!process.env.VERCEL,
+        debugInfo 
+      });
+    }
+  }, [isClient, screenSize, debugInfo]);
 
   // Responsive positions for each service card
   const responsivePositions = {
@@ -55,7 +152,6 @@ const FeatureSection = () => {
       lg: { left: 83, top: 35, width: 256, height: 176 },
       xl: { left: 82, top: 28, width: 220, height: 140 },
       xxl: { left: 82, top: 75, width: 400, height: 270 }
-
     },
     postgres: {
       sm: { left: 15, top: 85, width: 180, height: 110 },
@@ -63,7 +159,6 @@ const FeatureSection = () => {
       lg: { left: 10, top: 75, width: 256, height: 176 },
       xl: { left: 12, top: 65, width: 220, height: 140 },
       xxl: { left: 12, top: 140, width: 400, height: 270 }
-
     },
     redis: {
       sm: { left: 75, top: 85, width: 180, height: 110 },
@@ -71,7 +166,6 @@ const FeatureSection = () => {
       lg: { left: 70, top: 75, width: 256, height: 176 },
       xl: { left: 72, top: 65, width: 220, height: 140 },
       xxl: { left: 70, top: 140, width: 400, height: 270 }
-
     },
     monitoring: {
       sm: { left: 15, top: 45, width: 180, height: 110 },
@@ -79,7 +173,6 @@ const FeatureSection = () => {
       lg: { left: 4, top: 28, width: 256, height: 176 },
       xl: { left: 5, top: 26, width: 220, height: 140 },
       xxl: { left: 6, top: 70, width: 400, height: 270 }
-
     }
   };
 
@@ -242,8 +335,57 @@ const FeatureSection = () => {
     return "0 0 1400 600"; // Keep original viewBox
   };
 
+  // Enhanced loading state with debug info
+  if (!isClient) {
+    return (
+      <section className='w-full text-left px-2 md:px-8 py-5 md:py-0 mx-auto md:rounded-2xl border-y md:border-x border-white/10 bg-[linear-gradient(180deg,#07060B_50%,#0A090E_100%)] relative h-[100vh] overflow-hidden'>
+        <div className="absolute inset-0 opacity-5">
+          <div className="w-full h-full" style={{
+            backgroundImage: `
+              linear-gradient(rgba(100,100,100,0.1) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(100,100,100,0.1) 1px, transparent 1px)
+            `,
+            backgroundSize: '40px 40px'
+          }} />
+        </div>
+        
+        <div className="relative z-10 text-center pt-8 pb-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
+            Application Infrastructure
+          </h2>
+          <p className="text-base text-gray-400 max-w-xl mx-auto">
+            Linear microservices network with grid-based routing
+          </p>
+        </div>
+        
+        <div className="relative z-10 h-[500px] w-full flex justify-center items-center">
+          <div className="w-96 h-72 bg-gray-900/90 backdrop-blur-sm border border-gray-700/70 rounded-3xl overflow-hidden shadow-2xl flex items-center justify-center">
+            <div className="text-center">
+              <div className="w-8 h-8 border-2 border-purple-500/30 border-t-purple-500 rounded-full animate-spin mx-auto mb-4"></div>
+              <p className="text-gray-400 text-sm">Detecting screen size...</p>
+              <p className="text-gray-500 text-xs mt-2">Initializing responsive layout</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section ref={containerRef} className='w-full text-left px-2 md:px-8 py-5 md:py-0 mx-auto md:rounded-2xl border-y md:border-x border-white/10 bg-[linear-gradient(180deg,#07060B_50%,#0A090E_100%)] relative h-[100vh] overflow-hidden'>
+      
+      {/* Debug Panel (remove in production) */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="fixed top-4 right-4 z-50 bg-black/80 text-white p-3 rounded-lg text-xs max-w-xs">
+          <div className="font-bold mb-2">Debug Info:</div>
+          <div>Screen: {screenSize}</div>
+          <div>Width: {debugInfo.windowWidth}px</div>
+          <div>CSS: {debugInfo.cssBreakpoint}</div>
+          <div>Env: {process.env.NODE_ENV}</div>
+          <div>Vercel: {process.env.VERCEL ? 'Yes' : 'No'}</div>
+        </div>
+      )}
+
       {/* Track and Train Container - Hidden on small screens */}
       <div className={`absolute left-0 top-0 w-96 h-full justify-center ${screenSize === 'sm' ? 'hidden' : 'flex'}`}>
         
@@ -283,7 +425,7 @@ const FeatureSection = () => {
             className="absolute w-full h-full"
             viewBox="100 -220 2800 800"
             fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+            xmlns="http://www.w3.org/1440/svg"
           >
             <defs>
               <linearGradient id="curveGradient" x1="0%" y1="0%" x2="50%" y2="0%">
